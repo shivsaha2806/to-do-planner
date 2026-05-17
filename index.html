@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cutesy Y2K Planner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            /* Starry midnight cyber-pastel gradients (Pure Dark Mode Vibes) */
+            --work-bg: linear-gradient(135deg, #120e20 0%, #0c141d 100%);
+            /* Personal mode: Cozy cosmic dark pastel emerald-green transitioning into dark dusty pink */
+            --personal-bg: linear-gradient(135deg, #0c1b12 0%, #220e17 100%);
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: var(--personal-bg);
+            color: #f3f4f6;
+            transition: background 0.5s ease-in-out, color 0.3s ease;
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body.work-mode {
+            background: var(--work-bg);
+        }
+
+        .glass-panel {
+            background: rgba(10, 8, 14, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 16px 45px 0 rgba(0, 0, 0, 0.8);
+            transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+        }
+        
+        .glass-card {
+            background: rgba(22, 17, 30, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+            transition: transform 0.2s, box-shadow 0.2s, background 0.3s, border-color 0.3s;
+        }
+        
+        .glass-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.65);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        input, select {
+            background-color: rgba(255, 255, 255, 0.03) !important;
+            color: #f3f4f6 !important;
+            border: 2px solid rgba(255, 255, 255, 0.08) !important;
+            border-radius: 0.75rem;
+        }
+        input:focus, select:focus {
+            border-color: #ff9eb5 !important;
+            outline: none;
+        }
+        .work-mode input:focus, .work-mode select:focus {
+            border-color: #8ec5fc !important;
+        }
+        input::placeholder {
+            color: #888aa0 !important;
+        }
+
+        .cute-checkbox {
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border: 2px solid #ff9eb5;
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .work-mode .cute-checkbox { border-color: #8ec5fc; }
+
+        .cute-checkbox:checked {
+            background-color: #ff9eb5;
+            transform: scale(1.1);
+        }
+        .work-mode .cute-checkbox:checked { background-color: #8ec5fc; }
+
+        .cute-checkbox:checked::after {
+            content: '✨';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 14px;
+        }
+
+        @keyframes floatUp {
+            0% { transform: translateY(0) scale(1); opacity: 1; }
+            100% { transform: translateY(-60px) scale(1.6); opacity: 0; }
+        }
+        .sparkle-anim {
+            animation: floatUp 0.9s ease-out forwards;
+            position: absolute;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        /* Custom Scrollbar for list container */
+        .task-list-container::-webkit-scrollbar {
+            width: 6px;
+        }
+        .task-list-container::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 10px;
+        }
+        .task-list-container::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 10px;
+        }
+        
+        /* Toast Alert Container styling */
+        #toast {
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s, bottom 0.3s;
+        }
+        #toast.show {
+            visibility: visible;
+            opacity: 1;
+            bottom: 30px;
+        }
+
+        /* Micro animations for Pixel Stickers */
+        @keyframes pixel-heartbeat {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.15) rotate(2deg); }
+        }
+        @keyframes pixel-float-spin {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-8px) rotate(15deg); }
+        }
+        @keyframes pixel-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        @keyframes pixel-sway {
+            0%, 100% { transform: rotate(-8deg) translateY(0); }
+            50% { transform: rotate(8deg) translateY(-3px); }
+        }
+        @keyframes pixel-ghosty {
+            0%, 100% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(-6px) translateX(4px); }
+        }
+        @keyframes pixel-rainbow {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.08); }
+        }
+        @keyframes pixel-mushroom {
+            0%, 100% { transform: scaleY(1); }
+            50% { transform: scaleY(0.9) translateY(1.5px); }
+        }
+
+        .anim-heartbeat {
+            animation: pixel-heartbeat 1.2s ease-in-out infinite;
+        }
+        .anim-floatspin {
+            animation: pixel-float-spin 2.2s ease-in-out infinite;
+        }
+        .anim-bounce {
+            animation: pixel-bounce 1s ease-in-out infinite;
+        }
+        .anim-sway {
+            animation: pixel-sway 1.8s ease-in-out infinite;
+            transform-origin: bottom center;
+        }
+        .anim-ghosty {
+            animation: pixel-ghosty 2s ease-in-out infinite;
+        }
+        .anim-rainbow {
+            animation: pixel-rainbow 1.8s ease-in-out infinite;
+        }
+        .anim-mushroom {
+            animation: pixel-mushroom 1.4s ease-in-out infinite;
+            transform-origin: bottom center;
+        }
+
+        /* Draggable Sticker Styling */
+        .draggable-sticker {
+            position: absolute;
+            cursor: grab;
+            user-select: none;
+            touch-action: none;
+            z-index: 40;
+            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
+            transition: transform 0.1s ease-out;
+        }
+        .draggable-sticker:active {
+            cursor: grabbing;
+            transform: scale(1.1);
+        }
+        .sticker-tray-item {
+            cursor: pointer;
+            transition: transform 0.2s, filter 0.2s;
+        }
+        .sticker-tray-item:hover {
+            transform: scale(1.15);
+            filter: brightness(1.1);
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8 flex justify-center items-start">
+
+    <!-- Responsive Main Planner Panel -->
+    <div id="plannerPanel" class="glass-panel w-full max-w-md md:max-w-3xl lg:max-w-4xl rounded-[2rem] p-6 sm:p-8 flex flex-col gap-6 relative mt-4 sm:mt-10 mb-10">
+        
+        <!-- Header & Top Controller Elements -->
+        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+            <h1 class="text-3xl sm:text-4xl font-black text-gray-100 tracking-tight text-center md:text-left transition-colors">
+                My <span id="modeTitle" class="text-pink-400 transition-colors">Personal</span><br/>Planner ✨
+            </h1>
+            
+            <div class="flex flex-wrap items-center justify-center gap-3">
+                <!-- Streak Tracker -->
+                <div class="glass-card px-4 py-2.5 rounded-2xl flex items-center gap-2 shadow-sm">
+                    <span class="text-xl">🌱</span>
+                    <div class="font-bold text-gray-300 text-sm sm:text-base">Streak: <span id="streakCount" class="text-pink-400 font-extrabold">0</span></div>
+                </div>
+
+                <!-- Toggle Sticker Cabinet -->
+                <button id="toggleCabinetBtn" onclick="window.toggleCabinet()" class="glass-card px-4 py-2.5 rounded-2xl flex items-center gap-2 hover:bg-white/5 transition-all active:scale-95 text-xs sm:text-sm font-bold text-pink-300" title="Toggle Sticker Cabinet">
+                    <span>🎨</span> <span id="cabinetToggleText">Hide Cabinet</span>
+                </button>
+
+                <!-- Google Auth Profile Card -->
+                <div id="userProfileArea" class="glass-card px-4 py-2.5 rounded-2xl flex items-center gap-2 shadow-sm cursor-pointer hover:bg-white/5 transition-all active:scale-95">
+                    <span class="text-xs font-black text-gray-400">Loading profile...</span>
+                </div>
+
+                <!-- Mode Toggle (Work vs Personal) -->
+                <div class="bg-black/60 p-1.5 rounded-full flex items-center cursor-pointer border border-white/5 shadow-inner" onclick="toggleMode()">
+                    <div id="personalToggle" class="px-4 py-2 rounded-full bg-pink-500/20 border border-pink-500/30 text-pink-300 font-bold transition-all text-xs sm:text-sm">Personal 🌸</div>
+                    <div id="workToggle" class="px-4 py-2 rounded-full text-gray-500 font-bold transition-all text-xs sm:text-sm">Work 💻</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sticker Cabinet Drawer -->
+        <div id="stickerCabinet" class="glass-card rounded-2xl p-4 flex flex-col gap-2 transition-all duration-300">
+            <div class="flex items-center justify-between">
+                <span class="text-xs font-black text-pink-300 tracking-wider uppercase flex items-center gap-1" id="cabinetHeaderLabel">
+                    💖 Y2K Sticker Cabinet (Tap to place, double-tap to remove!)
+                </span>
+                <span class="text-[10px] text-gray-500 font-bold">Decorate your board!</span>
+            </div>
+            <div class="flex flex-wrap items-center gap-4 sm:gap-6 py-2.5 px-4 bg-black/40 rounded-xl justify-center">
+                
+                <!-- Pixel Heart Tray Item -->
+                <div class="sticker-tray-item anim-heartbeat" onclick="window.spawnSticker('heart')" title="Add Pixel Heart">
+                    <svg viewBox="0 0 16 16" width="38" height="38" style="image-rendering: pixelated;">
+                        <path d="M4,1 h2 v1 h1 v1 h2 v-1 h1 v-1 h2 v1 h1 v1 h1 v3 h-1 v-1 h-1 v1 h-1 v1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-3 h1 v-1 h1" fill="#ff7da7" />
+                        <path d="M2,4 h1 v3 h1 v1 h1 v1 h1 v1 h1 v1 h2 v-1 h1 v-1 h1 v-1 h1 v-1 h1 v-3 h1 v-1 h-1 v-1 h-2 v1 h-1 v-1 h-2 v1 h-1" fill="none" stroke="#220e17" stroke-width="1"/>
+                        <rect x="4" y="3" width="1" height="1" fill="#ffffff" />
+                        <rect x="5" y="4" width="1" height="1" fill="#ffffff" />
+                    </svg>
+                </div>
+
+                <!-- Upgraded Symmetrical Pixel Star Tray Item -->
+                <div class="sticker-tray-item anim-floatspin" onclick="window.spawnSticker('star')" title="Add Cyber Star">
+                    <svg viewBox="0 0 16 16" width="38" height="38" style="image-rendering: pixelated;">
+                        <!-- Symmetrical Star Outline -->
+                        <rect x="7" y="1" width="2" height="14" fill="#332200"/>
+                        <rect x="1" y="7" width="14" height="2" fill="#332200"/>
+                        <rect x="6" y="3" width="4" height="10" fill="#332200"/>
+                        <rect x="3" y="6" width="10" height="4" fill="#332200"/>
+                        <rect x="5" y="4" width="6" height="8" fill="#332200"/>
+                        <rect x="4" y="5" width="8" height="6" fill="#332200"/>
+                        <!-- Symmetrical Star Fill -->
+                        <rect x="7" y="2" width="2" height="12" fill="#ffeb3b"/>
+                        <rect x="2" y="7" width="12" height="2" fill="#ffeb3b"/>
+                        <rect x="6" y="4" width="4" height="8" fill="#ffeb3b"/>
+                        <rect x="4" y="6" width="8" height="4" fill="#ffeb3b"/>
+                        <rect x="5" y="5" width="6" height="6" fill="#ffeb3b"/>
+                        <!-- Star Glowing Core -->
+                        <rect x="7" y="6" width="2" height="4" fill="#ffffff"/>
+                        <rect x="6" y="7" width="4" height="2" fill="#ffffff"/>
+                    </svg>
+                </div>
+
+                <!-- Pixel Ghosty Boo -->
+                <div class="sticker-tray-item anim-ghosty" onclick="window.spawnSticker('ghost')" title="Add Ghosty Boo">
+                    <svg viewBox="0 0 16 16" width="38" height="38" style="image-rendering: pixelated;">
+                        <path d="M5,2 h6 v1 h2 v2 h1 v7 h-1 v-1 h-1 v1 h-1 v1 h-2 v-1 h-1 v-1 h-1 v1 h-1 v1 h-2 v-1 h-1 v-1 h-1 v-7 h1 v-2 h2" fill="#120e20"/>
+                        <path d="M5,3 h6 v1 h1 v2 h1 v6 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-6 h1 v-2 h1" fill="#e8e5ff"/>
+                        <rect x="5" y="6" width="2" height="2" fill="#120e20"/>
+                        <rect x="9" y="6" width="2" height="2" fill="#120e20"/>
+                        <rect x="4" y="8" width="1" height="1" fill="#ff7da7"/>
+                        <rect x="11" y="8" width="1" height="1" fill="#ff7da7"/>
+                    </svg>
+                </div>
+
+                <!-- Pixel Alien Cat Item -->
+                <div class="sticker-tray-item anim-bounce" onclick="window.spawnSticker('kitty')" title="Add Tamagotchi Pet">
+                    <svg viewBox="0 0 16 16" width="38" height="38" style="image-rendering: pixelated;">
+                        <path d="M2,2 h2 v2 h8 v-2 h2 v-4 h1 v6 h-14 v-6 h1" fill="#bb86fc" stroke="#120e20" stroke-width="0.8"/>
+                        <rect x="3" y="3" width="1" height="1" fill="#ff7da7" />
+                        <rect x="12" y="3" width="1" height="1" fill="#ff7da7" />
+                        <rect x="4" y="7" width="2" height="2" fill="#000000" />
+                        <rect x="10" y="7" width="2" height="2" fill="#000000" />
+                        <rect x="4" y="7" width="1" height="1" fill="#ffffff" />
+                        <rect x="10" y="7" width="1" height="1" fill="#ffffff" />
+                        <rect x="3" y="9" width="1" height="1" fill="#ff7da7" />
+                        <rect x="12" y="9" width="1" height="1" fill="#ff7da7" />
+                    </svg>
+                </div>
+
+                <!-- Pixel Rainbow Cloud -->
+                <div class="sticker-tray-item anim-rainbow" onclick="window.spawnSticker('rainbow')" title="Add Rainbow Cloud">
+                    <svg viewBox="0 0 16 16" width="38" height="38" style="image-rendering: pixelated;">
+                        <rect x="2" y="8" width="12" height="1" fill="#ff7da7"/>
+                        <rect x="3" y="9" width="10" height="1" fill="#ffeb3b"/>
+                        <rect x="4" y="10" width="8" height="1" fill="#8ec5fc"/>
+                        <path d="M5,4 h5 v1 h2 v1 h2 v4 h-11 v-2 h-1 v-2 h1 v-1 h2" fill="#120e20"/>
+                        <path d="M5,5 h5 v1 h1 v1 h1 v2 h-9 v-1 h-1 v-1 h-1 v-1 h1" fill="#ffffff"/>
+                        <rect x="4" y="7" width="1" height="1" fill="#ff7da7"/>
+                        <rect x="9" y="7" width="1" height="1" fill="#ff7da7"/>
+                    </svg>
+                </div>
+
+                <!-- Pixel Cherry Item -->
+                <div class="sticker-tray-item anim-sway" onclick="window.spawnSticker('cherry')" title="Add Twin Cherries">
+                    <svg viewBox="0 0 16 16" width="38" height="38" style="image-rendering: pixelated;">
+                        <path d="M8,2 h2 v1 h-1 v2 h-2 v-1" fill="none" stroke="#4caf50" stroke-width="1"/>
+                        <path d="M10,3 h2 v2 h-1 v3" fill="none" stroke="#4caf50" stroke-width="1"/>
+                        <path d="M4,9 h3 v3 h-3" fill="#e91e63" stroke="#220e17" stroke-width="0.8"/>
+                        <rect x="5" y="10" width="1" height="1" fill="#ffffff" />
+                        <path d="M9,9 h3 v3 h-3" fill="#e91e63" stroke="#220e17" stroke-width="0.8"/>
+                        <rect x="10" y="10" width="1" height="1" fill="#ffffff" />
+                    </svg>
+                </div>
+
+                <!-- Pixel Magic Mushroom -->
+                <div class="sticker-tray-item anim-mushroom" onclick="window.spawnSticker('mushroom')" title="Add Magic Shroom">
+                    <svg viewBox="0 0 16 16" width="38" height="38" style="image-rendering: pixelated;">
+                        <path d="M5,2 h6 v1 h2 v2 h1 v4 h-12 v-4 h2 v-2 h1" fill="#120e20"/>
+                        <path d="M5,3 h6 v1 h1 v4 h-10 v-4 h1 v-1" fill="#ff7da7"/>
+                        <rect x="5" y="4" width="2" height="2" fill="#ffffff"/>
+                        <rect x="9" y="5" width="2" height="1" fill="#ffffff"/>
+                        <path d="M5,9 h6 v5 h-6" fill="#120e20"/>
+                        <path d="M6,9 h4 v4 h-4" fill="#fff5e6"/>
+                        <rect x="6" y="10" width="1" height="2" fill="#120e20"/>
+                        <rect x="8" y="10" width="1" height="2" fill="#120e20"/>
+                    </svg>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Responsive Task Add Section -->
+        <form id="taskForm" class="glass-card rounded-2xl p-4 flex flex-col md:flex-row gap-3 items-center">
+            <input type="text" id="taskInput" required placeholder="What needs to be done? ☁️" class="w-full md:flex-1 bg-white/5 border-2 border-transparent focus:border-pink-300 rounded-xl px-4 py-3 outline-none text-gray-100 font-semibold placeholder-gray-400 transition-all">
+            
+            <div class="flex w-full md:w-auto gap-3">
+                <select id="tagInput" class="w-1/2 md:w-auto bg-white/5 border-2 border-transparent focus:border-pink-300 rounded-xl px-3 py-3 outline-none text-gray-300 font-bold cursor-pointer">
+                    <option value="Daily">Daily ☕</option>
+                    <option value="High Priority">Urgent 🚨</option>
+                    <option value="Prep">Prep 🎒</option>
+                    <option value="Finance">DUES 💸</option>
+                    <option value="Upskilling">Growth 🧠</option>
+                </select>
+
+                <input type="date" id="dateInput" class="w-1/2 md:w-auto bg-white/5 border-2 border-transparent focus:border-pink-300 rounded-xl px-3 py-3 outline-none text-gray-300 font-bold cursor-pointer text-sm">
+            </div>
+
+            <button type="submit" class="w-full md:w-auto bg-pink-500 hover:bg-pink-600 text-white font-black px-6 py-3 rounded-xl shadow-lg transition-transform hover:scale-105 active:scale-95 flex-shrink-0" id="submitBtn">
+                ADD +
+            </button>
+        </form>
+
+        <!-- Task Canvas Viewport -->
+        <div class="flex flex-col gap-3 task-list-container max-h-[50vh] sm:max-h-[60vh] overflow-y-auto pr-2" id="taskList">
+            <div class="text-center text-gray-400 font-bold py-10 opacity-70">
+                Connecting securely to your planner database... 🎀
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Info Modal for Firebase Setup Guide & Local Mode Warning -->
+    <div id="statusModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4 transition-all">
+        <div class="glass-panel max-w-md w-full rounded-2xl p-6 relative border-pink-500/20 shadow-2xl">
+            <button onclick="window.closeStatusInfo()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl font-bold transition-colors">&times;</button>
+            <h3 class="text-xl font-extrabold text-pink-400 mb-4 flex items-center gap-2">
+                <span>🔧</span> Firebase Auth Setup Guide
+            </h3>
+            <div class="text-sm text-gray-300 space-y-3 leading-relaxed">
+                <p>Your planner is running in <strong class="text-yellow-400">Local Storage Mode</strong>. All features work completely, but tasks are saved locally on this browser.</p>
+                
+                <div class="bg-black/50 p-4 rounded-xl border border-white/5 space-y-2">
+                    <p class="font-bold text-pink-300 text-xs tracking-wider uppercase">How to enable Cloud Sync & Google Auth in your Firebase:</p>
+                    <ol class="list-decimal list-inside space-y-1.5 text-xs text-gray-400">
+                        <li>Go to your <a href="https://console.firebase.google.com" target="_blank" class="text-blue-400 underline hover:text-blue-300 font-semibold">Firebase Console</a>.</li>
+                        <li>On the left sidebar, click <strong>Build</strong> &rarr; <strong>Authentication</strong>.</li>
+                        <li>Under the <strong>Sign-in method</strong> tab, enable both <strong>Anonymous</strong> and <strong>Google</strong> providers, then save changes!</li>
+                    </ol>
+                </div>
+                <p class="text-xs text-green-300">🌸 Google authentication allows your personal tasks to sync securely across all your favorite devices!</p>
+            </div>
+            <button onclick="window.closeStatusInfo()" class="mt-5 w-full bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 rounded-xl transition-all hover:scale-[1.02] active:scale-95 shadow-lg">
+                Got it! Let me Plan 💖
+            </button>
+        </div>
+    </div>
+
+    <!-- Sign Out Confirmation Modal -->
+    <div id="signOutModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm hidden items-center justify-center z-50 p-4 transition-all">
+        <div class="glass-panel max-sm:mx-4 max-w-sm w-full rounded-2xl p-6 relative border-pink-500/20 shadow-2xl">
+            <h3 class="text-xl font-extrabold text-pink-400 mb-4 flex items-center gap-2">
+                <span>👋</span> Bye already?
+            </h3>
+            <p class="text-sm text-gray-300 mb-6 leading-relaxed">Are you sure you want to sign out of your Google account? Your offline tasks will remain safe on this device.</p>
+            <div class="flex gap-3">
+                <button onclick="window.closeSignOutModal()" class="flex-1 bg-white/5 hover:bg-white/10 text-gray-300 font-bold py-2.5 rounded-xl border border-white/5 transition-all text-sm">
+                    Cancel
+                </button>
+                <button onclick="window.executeSignOut()" class="flex-1 bg-pink-500 hover:bg-pink-600 text-white font-bold py-2.5 rounded-xl shadow-lg transition-all text-sm">
+                    Sign Out 🌸
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification Overlay -->
+    <div id="toast" class="fixed bottom-0 left-1/2 transform -translate-x-1/2 mb-4 glass-card px-6 py-3 rounded-full text-gray-100 font-bold shadow-2xl z-50 flex items-center gap-2 border-pink-500/20">
+        <span id="toastMsg">Action successful!</span>
+    </div>
+
+    <!-- Database logic & interactions -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        // Integrated User Project config credentials
+        const firebaseConfig = {
+            apiKey: "AIzaSyANcGUaQXiShfGkCcRoIZ8lQRTRq2N3Jj8",
+            authDomain: "to-do-plannee.firebaseapp.com",
+            projectId: "to-do-plannee",
+            storageBucket: "to-do-plannee.firebasestorage.app",
+            messagingSenderId: "1062377892908",
+            appId: "1:1062377892908:web:d191596331bff28180b589"
+        };
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'to-do-plannee';
+
+        let app, db, auth, userId;
+        let currentMode = 'Personal';
+        let allTasks = [];
+        let allStickers = [];
+        let isCloudMode = false;
+        let streak = parseInt(localStorage.getItem('plannerStreak') || '0');
+        let firestoreTasksUnsubscribe = null;
+        let firestoreStickersUnsubscribe = null;
+
+        // Set streak values in user interface
+        document.getElementById('streakCount').innerText = streak;
+
+        // Populate date selectors to match current calendar date
+        const todayDate = new Date();
+        document.getElementById('dateInput').value = todayDate.getFullYear() + '-' + String(todayDate.getMonth() + 1).padStart(2, '0') + '-' + String(todayDate.getDate()).padStart(2, '0');
+
+        async function initApp() {
+            // Restore hidden state of cabinet
+            const cabinetVisible = localStorage.getItem('cabinetVisible');
+            if (cabinetVisible === 'false') {
+                document.getElementById('stickerCabinet').classList.add('hidden');
+                document.getElementById('cabinetToggleText').innerText = "Show Cabinet";
+            }
+
+            try {
+                app = initializeApp(firebaseConfig);
+                db = getFirestore(app);
+                auth = getAuth(app);
+
+                // Set up auth state observer
+                onAuthStateChanged(auth, async (user) => {
+                    if (user) {
+                        userId = user.uid;
+                        isCloudMode = true;
+                        updateUserProfileUI(user);
+                        setupDatabaseListener();
+                    } else {
+                        // User is signed out, let's sign them in anonymously by default
+                        try {
+                            if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                                await signInWithCustomToken(auth, __initial_auth_token);
+                            } else {
+                                await signInAnonymously(auth);
+                            }
+                        } catch (anonError) {
+                            console.warn("Anonymous auth failed, falling back to local storage.", anonError);
+                            enableLocalFallback("Offline Mode active.");
+                        }
+                    }
+                });
+            } catch (error) {
+                console.warn("Firebase Init failed! Falling back to Local Storage Mode safely.", error);
+                enableLocalFallback("Offline Mode active.");
+            }
+        }
+
+        function updateUserProfileUI(user) {
+            const profileArea = document.getElementById('userProfileArea');
+            if (!profileArea) return;
+
+            if (user.isAnonymous) {
+                profileArea.innerHTML = `
+                    <button onclick="window.signInWithGoogle()" class="flex items-center gap-2 text-xs font-black text-pink-300 hover:text-pink-200 transition-colors" id="googleSignInBtnText">
+                        <i class="fa-brands fa-google text-pink-400" id="googleIconBrand"></i>
+                        <span>Sign In</span>
+                    </button>
+                `;
+                // Apply dynamic color adjustments based on active mode
+                adjustModeColorsForAuthBtn();
+            } else {
+                const photoURL = user.photoURL || 'https://placehold.co/100x100/ff9eb5/ffffff?text=🌸';
+                const displayName = user.displayName || 'Cutie';
+                profileArea.innerHTML = `
+                    <div class="flex items-center gap-2" onclick="window.showSignOutConfirm()">
+                        <img src="${photoURL}" alt="avatar" class="w-5 h-5 rounded-full border border-pink-500/30" onerror="this.src='https://placehold.co/100x100/ff9eb5/ffffff?text=🌸'">
+                        <span class="text-xs font-black text-gray-200 hidden sm:inline max-w-[80px] truncate">${displayName}</span>
+                        <i class="fa-solid fa-right-from-bracket text-[10px] text-gray-400 hover:text-red-400 ml-1 transition-colors" title="Sign Out"></i>
+                    </div>
+                `;
+            }
+        }
+
+        window.signInWithGoogle = async () => {
+            const provider = new GoogleAuthProvider();
+            try {
+                await signInWithPopup(auth, provider);
+                showToast("Welcome! Signed in with Google 💖");
+            } catch (error) {
+                console.error("Google Sign-In Error:", error);
+                showToast("Could not sign in. Make sure Google Auth is enabled! 🌸");
+            }
+        };
+
+        window.showSignOutConfirm = () => {
+            const modal = document.getElementById('signOutModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        };
+
+        window.closeSignOutModal = () => {
+            const modal = document.getElementById('signOutModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        };
+
+        window.executeSignOut = async () => {
+            try {
+                window.closeSignOutModal();
+                await signOut(auth);
+                showToast("Signed out! Offline backup loaded 💾");
+            } catch (error) {
+                console.error("Sign Out Error:", error);
+                showToast("Failed to sign out.");
+            }
+        };
+
+        function enableLocalFallback(statusMsg) {
+            isCloudMode = false;
+            userId = 'local_user';
+            
+            // Render unauthenticated login option in offline fallback
+            const profileArea = document.getElementById('userProfileArea');
+            if (profileArea) {
+                profileArea.innerHTML = `
+                    <button onclick="window.signInWithGoogle()" class="flex items-center gap-2 text-xs font-black text-pink-300 hover:text-pink-200 transition-colors" id="googleSignInBtnText">
+                        <i class="fa-brands fa-google text-pink-400" id="googleIconBrand"></i>
+                        <span>Sign In</span>
+                    </button>
+                `;
+                adjustModeColorsForAuthBtn();
+            }
+            
+            loadLocalTasks();
+            loadLocalStickers();
+        }
+
+        window.showStatusInfo = () => {
+            const modal = document.getElementById('statusModal');
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        };
+
+        window.closeStatusInfo = () => {
+            const modal = document.getElementById('statusModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        };
+
+        function loadLocalTasks() {
+            const stored = localStorage.getItem('localPlannerTasks');
+            allTasks = stored ? JSON.parse(stored) : [];
+            renderTasks();
+        }
+
+        function saveLocalTasks() {
+            localStorage.setItem('localPlannerTasks', JSON.stringify(allTasks));
+        }
+
+        function loadLocalStickers() {
+            const stored = localStorage.getItem('localPlannerStickers');
+            allStickers = stored ? JSON.parse(stored) : [];
+            renderStickers();
+        }
+
+        function saveLocalStickers() {
+            localStorage.setItem('localPlannerStickers', JSON.stringify(allStickers));
+        }
+
+        function setupDatabaseListener() {
+            if (!userId || !isCloudMode) return;
+            
+            // Clean up old active listeners when user switches or logs in
+            if (firestoreTasksUnsubscribe) {
+                firestoreTasksUnsubscribe();
+            }
+            if (firestoreStickersUnsubscribe) {
+                firestoreStickersUnsubscribe();
+            }
+
+            const tasksRef = collection(db, 'artifacts', appId, 'users', userId, 'tasks');
+            const stickersRef = collection(db, 'artifacts', appId, 'users', userId, 'stickers');
+            
+            // Listen for tasks
+            firestoreTasksUnsubscribe = onSnapshot(tasksRef, (snapshot) => {
+                allTasks = [];
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    allTasks.push({
+                        id: doc.id,
+                        title: data.title || '',
+                        category: data.category || 'Personal',
+                        tag: data.tag || 'Daily',
+                        isCompleted: data.isCompleted || false,
+                        createdAt: data.createdAt ? (data.createdAt.toMillis ? data.createdAt.toMillis() : data.createdAt) : Date.now(),
+                        expectedDate: data.expectedDate || null,
+                        snoozedUntil: data.snoozedUntil || null
+                    });
+                });
+                renderTasks();
+            }, (error) => {
+                console.error("Realtime tasks sync issue:", error);
+                enableLocalFallback("Sync failed. Local backup active.");
+            });
+
+            // Listen for stickers
+            firestoreStickersUnsubscribe = onSnapshot(stickersRef, (snapshot) => {
+                allStickers = [];
+                snapshot.forEach((doc) => {
+                    const data = doc.data();
+                    allStickers.push({
+                        id: doc.id,
+                        type: data.type,
+                        x: data.x,
+                        y: data.y,
+                        category: data.category || 'Personal'
+                    });
+                });
+                renderStickers();
+            }, (error) => {
+                console.error("Realtime stickers sync issue:", error);
+            });
+        }
+
+        function renderTasks() {
+            const d = new Date();
+            const todayStr = d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
+
+            // Categorize by selection (Work/Personal)
+            const filteredTasks = allTasks.filter(t => t.category === currentMode);
+            
+            // Render rules: Show active first, sorted chronologically
+            filteredTasks.sort((a, b) => {
+                if (a.isCompleted !== b.isCompleted) return a.isCompleted ? 1 : -1;
+                return b.createdAt - a.createdAt;
+            });
+
+            const listEl = document.getElementById('taskList');
+            listEl.innerHTML = '';
+
+            if (filteredTasks.length === 0) {
+                listEl.innerHTML = `
+                    <div class="text-center text-gray-400 font-bold py-10 opacity-70 bg-black/40 border border-white/5 rounded-2xl">
+                        No tasks listed here yet! Type above to create one. 💖
+                    </div>
+                `;
+                return;
+            }
+
+            // Create cards
+            filteredTasks.forEach(task => {
+                const dateCreatedObj = new Date(task.createdAt);
+                const createdStr = `${dateCreatedObj.toLocaleString('default', { month: 'short' })} ${dateCreatedObj.getDate()}`;
+                
+                let dueStr = '';
+                if (task.expectedDate) {
+                    const dueObj = new Date(task.expectedDate);
+                    const userTimezoneOffset = dueObj.getTimezoneOffset() * 60000;
+                    const adjustedDueObj = new Date(dueObj.getTime() + userTimezoneOffset);
+                    dueStr = `${adjustedDueObj.toLocaleString('default', { month: 'short' })} ${adjustedDueObj.getDate()}`;
+                } else {
+                    dueStr = 'None';
+                }
+
+                let snoozedBadge = '';
+                if (task.snoozedUntil && task.snoozedUntil > todayStr && !task.isCompleted) {
+                    snoozedBadge = '<span class="text-xs text-blue-300 bg-blue-950/50 border border-blue-900/40 px-2 py-0.5 rounded-md font-bold flex items-center gap-1">😴 Snoozed</span>';
+                }
+
+                const tagColor = getTagColor(task.tag);
+
+                const taskEl = document.createElement('div');
+                taskEl.className = `glass-card p-4 rounded-2xl flex items-center justify-between gap-3 ${task.isCompleted ? 'opacity-40' : ''} relative overflow-hidden`;
+                
+                taskEl.innerHTML = `
+                    <div class="flex items-center gap-4 flex-1 min-w-0">
+                        <input type="checkbox" class="cute-checkbox flex-shrink-0" ${task.isCompleted ? 'checked' : ''} onchange="window.toggleTask('${task.id}', event)">
+                        <div class="flex flex-col min-w-0">
+                            <span class="font-bold text-gray-100 text-lg truncate ${task.isCompleted ? 'line-through text-gray-500' : ''}">
+                                ${task.title}
+                            </span>
+                            <div class="flex flex-wrap items-center gap-2 mt-1">
+                                ${snoozedBadge}
+                                <span class="${tagColor} text-xs font-bold px-2 py-0.5 rounded-md">${task.tag}</span>
+                                <span class="text-xs text-gray-400 bg-white/5 border border-white/5 px-2 py-0.5 rounded-md font-semibold">🌱 Created: ${createdStr}</span>
+                                <span class="text-xs text-gray-400 bg-white/5 border border-white/5 px-2 py-0.5 rounded-md font-semibold">🎯 Due: ${dueStr}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-2 flex-shrink-0">
+                        ${!task.isCompleted ? `
+                        <button onclick="window.snoozeTask('${task.id}')" title="Snooze until tomorrow" class="w-8 h-8 rounded-full bg-blue-950/40 text-blue-400 border border-blue-900/30 flex items-center justify-center transition-colors hover:bg-blue-900 hover:text-blue-300 shadow-inner">
+                            <i class="fa-solid fa-angles-right text-xs"></i>
+                        </button>` : ''}
+                        <button onclick="window.deleteTask('${task.id}')" title="Delete Task" class="w-8 h-8 rounded-full bg-red-950/40 text-red-400 border border-red-900/30 flex items-center justify-center transition-colors hover:bg-red-900 hover:text-red-300 shadow-inner">
+                            <i class="fa-solid fa-trash-can text-xs"></i>
+                        </button>
+                    </div>
+                `;
+                listEl.appendChild(taskEl);
+            });
+        }
+
+        // Tag styling presets
+        function getTagColor(tag) {
+            const colors = {
+                'Daily': 'bg-blue-950/50 text-blue-300 border border-blue-800/40',
+                'High Priority': 'bg-red-950/50 text-red-300 border border-red-800/40',
+                'Prep': 'bg-purple-950/50 text-purple-300 border border-purple-800/40',
+                'Finance': 'bg-green-950/50 text-green-300 border border-green-800/40',
+                'Upskilling': 'bg-yellow-950/50 text-yellow-300 border border-yellow-800/40'
+            };
+            return colors[tag] || 'bg-gray-800 text-gray-300 border border-gray-700/40';
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2500);
+        }
+
+        function createSparkles(x, y) {
+            const emojis = ['✨', '💖', '⭐', '🎀'];
+            for(let i=0; i<5; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+                sparkle.className = 'sparkle-anim text-xl';
+                sparkle.style.left = (x + (Math.random() * 50 - 25)) + 'px';
+                sparkle.style.top = (y + (Math.random() * 50 - 25)) + 'px';
+                document.body.appendChild(sparkle);
+                setTimeout(() => sparkle.remove(), 900);
+            }
+        }
+
+        // Hide/Show Sticker Drawer container viewports
+        window.toggleCabinet = () => {
+            const cabinet = document.getElementById('stickerCabinet');
+            const toggleText = document.getElementById('cabinetToggleText');
+            const isCurrentlyHidden = cabinet.classList.contains('hidden');
+
+            if (isCurrentlyHidden) {
+                cabinet.classList.remove('hidden');
+                toggleText.innerText = "Hide Cabinet";
+                localStorage.setItem('cabinetVisible', 'true');
+                showToast("Cabinet open! 🎨");
+            } else {
+                cabinet.classList.add('hidden');
+                toggleText.innerText = "Show Cabinet";
+                localStorage.setItem('cabinetVisible', 'false');
+                showToast("Cabinet hidden 🤫");
+            }
+        };
+
+        // Align sign-in button with active theme accent shades
+        function adjustModeColorsForAuthBtn() {
+            const btnText = document.getElementById('googleSignInBtnText');
+            const icon = document.getElementById('googleIconBrand');
+            if (!btnText || !icon) return;
+
+            if (currentMode === 'Work') {
+                btnText.classList.replace('text-pink-300', 'text-blue-300');
+                btnText.classList.replace('hover:text-pink-200', 'hover:text-blue-200');
+                icon.classList.replace('text-pink-400', 'text-blue-400');
+            } else {
+                btnText.classList.replace('text-blue-300', 'text-pink-300');
+                btnText.classList.replace('hover:text-blue-200', 'hover:text-pink-200');
+                icon.classList.replace('text-blue-400', 'text-pink-400');
+            }
+        }
+
+        // Switching modes (Personal vs Work)
+        window.toggleMode = () => {
+            const isPersonal = currentMode === 'Personal';
+            currentMode = isPersonal ? 'Work' : 'Personal';
+            
+            document.body.classList.toggle('work-mode');
+            document.getElementById('modeTitle').innerText = currentMode;
+            
+            const pt = document.getElementById('personalToggle');
+            const wt = document.getElementById('workToggle');
+            const cabBtn = document.getElementById('toggleCabinetBtn');
+            const cabLabel = document.getElementById('cabinetHeaderLabel');
+            
+            if (currentMode === 'Work') {
+                pt.className = "px-4 py-2 rounded-full text-gray-500 font-bold transition-all text-xs sm:text-sm";
+                wt.className = "px-4 py-2 rounded-full bg-blue-500/20 border border-blue-500/30 text-blue-300 font-bold transition-all text-xs sm:text-sm";
+                document.getElementById('modeTitle').className = "text-blue-400 transition-colors";
+                document.getElementById('submitBtn').className = "w-full md:w-auto bg-blue-500 hover:bg-blue-600 text-white font-black px-6 py-3 rounded-xl shadow-lg transition-transform hover:scale-105 active:scale-95 flex-shrink-0";
+                document.getElementById('taskInput').classList.replace('focus:border-pink-300', 'focus:border-blue-300');
+                document.getElementById('tagInput').classList.replace('focus:border-pink-300', 'focus:border-blue-300');
+                document.getElementById('dateInput').classList.replace('focus:border-pink-300', 'focus:border-blue-300');
+                
+                // Toggle styles for cabinet controls
+                cabBtn.classList.replace('text-pink-300', 'text-blue-300');
+                cabLabel.classList.replace('text-pink-300', 'text-blue-300');
+            } else {
+                wt.className = "px-4 py-2 rounded-full text-gray-500 font-bold transition-all text-xs sm:text-sm";
+                pt.className = "px-4 py-2 rounded-full bg-pink-500/20 border border-pink-500/30 text-pink-300 font-bold transition-all text-xs sm:text-sm";
+                document.getElementById('modeTitle').className = "text-pink-400 transition-colors";
+                document.getElementById('submitBtn').className = "w-full md:w-auto bg-pink-500 hover:bg-pink-600 text-white font-black px-6 py-3 rounded-xl shadow-lg transition-transform hover:scale-105 active:scale-95 flex-shrink-0";
+                document.getElementById('taskInput').classList.replace('focus:border-blue-300', 'focus:border-pink-300');
+                document.getElementById('tagInput').classList.replace('focus:border-blue-300', 'focus:border-pink-300');
+                document.getElementById('dateInput').classList.replace('focus:border-blue-300', 'focus:border-pink-300');
+                
+                // Toggle styles for cabinet controls
+                cabBtn.classList.replace('text-blue-300', 'text-pink-300');
+                cabLabel.classList.replace('text-blue-300', 'text-pink-300');
+            }
+            
+            adjustModeColorsForAuthBtn();
+            renderTasks();
+            renderStickers();
+        };
+
+        // Form submission logic
+        document.getElementById('taskForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!userId) return;
+
+            const title = document.getElementById('taskInput').value.trim();
+            const tag = document.getElementById('tagInput').value;
+            const expectedDate = document.getElementById('dateInput').value;
+            
+            if (!title) return;
+
+            const newTask = {
+                title,
+                tag,
+                category: currentMode,
+                isCompleted: false,
+                createdAt: new Date().getTime(),
+                expectedDate: expectedDate || null,
+                snoozedUntil: null
+            };
+
+            if (isCloudMode) {
+                try {
+                    const tasksRef = collection(db, 'artifacts', appId, 'users', userId, 'tasks');
+                    await addDoc(tasksRef, newTask);
+                    document.getElementById('taskInput').value = '';
+                    showToast("Task added! 🎀");
+                } catch (error) {
+                    console.error("Error adding document to Firebase: ", error);
+                }
+            } else {
+                newTask.id = 'local_' + Math.random().toString(36).substr(2, 9);
+                allTasks.push(newTask);
+                saveLocalTasks();
+                document.getElementById('taskInput').value = '';
+                renderTasks();
+                showToast("Saved locally! 💾");
+            }
+        });
+
+        // Toggle completed state
+        window.toggleTask = async (id, event) => {
+            if (!userId) return;
+            const isChecked = event.target.checked;
+            
+            if (isCloudMode) {
+                try {
+                    const docRef = doc(db, 'artifacts', appId, 'users', userId, 'tasks', id);
+                    await updateDoc(docRef, { isCompleted: isChecked });
+                    
+                    if (isChecked) {
+                        const rect = event.target.getBoundingClientRect();
+                        createSparkles(rect.left, rect.top);
+                        streak++;
+                        localStorage.setItem('plannerStreak', streak);
+                        document.getElementById('streakCount').innerText = streak;
+                        showToast("Yay! Completed! ✨");
+                    }
+                } catch (error) {
+                    console.error("Error updating checklist:", error);
+                    event.target.checked = !isChecked; 
+                }
+            } else {
+                const taskIndex = allTasks.findIndex(t => t.id === id);
+                if (taskIndex > -1) {
+                    allTasks[taskIndex].isCompleted = isChecked;
+                    saveLocalTasks();
+                    if (isChecked) {
+                        const rect = event.target.getBoundingClientRect();
+                        createSparkles(rect.left, rect.top);
+                        streak++;
+                        localStorage.setItem('plannerStreak', streak);
+                        document.getElementById('streakCount').innerText = streak;
+                        showToast("Yay! Completed! ✨");
+                    }
+                    renderTasks();
+                }
+            }
+        };
+
+        // Snooze / Hide task until tomorrow (Without affecting original due date!)
+        window.snoozeTask = async (id) => {
+            if (!userId) return;
+            const nextDate = new Date();
+            nextDate.setDate(nextDate.getDate() + 1);
+            
+            const nextDateString = nextDate.getFullYear() + '-' + 
+                                   String(nextDate.getMonth() + 1).padStart(2, '0') + '-' + 
+                                   String(nextDate.getDate()).padStart(2, '0');
+
+            if (isCloudMode) {
+                try {
+                    const docRef = doc(db, 'artifacts', appId, 'users', userId, 'tasks', id);
+                    await updateDoc(docRef, { snoozedUntil: nextDateString }); 
+                    showToast("Snoozed! See you tomorrow 😴");
+                } catch (error) {
+                    console.error("Error updating snooze values:", error);
+                    showToast("Couldn't snooze.");
+                }
+            } else {
+                const taskIndex = allTasks.findIndex(t => t.id === id);
+                if (taskIndex > -1) {
+                    allTasks[taskIndex].snoozedUntil = nextDateString;
+                    saveLocalTasks();
+                    renderTasks();
+                    showToast("Snoozed! See you tomorrow 😴");
+                }
+            }
+        };
+
+        // Permanently delete document entries
+        window.deleteTask = async (id) => {
+            if (!userId) return;
+            
+            if (isCloudMode) {
+                try {
+                    const docRef = doc(db, 'artifacts', appId, 'users', userId, 'tasks', id);
+                    await deleteDoc(docRef);
+                    showToast("Task deleted 🗑️");
+                } catch (error) {
+                    console.error("Error removing task:", error);
+                    showToast("Failed to delete.");
+                }
+            } else {
+                allTasks = allTasks.filter(t => t.id !== id);
+                saveLocalTasks();
+                renderTasks();
+                showToast("Task deleted 🗑️");
+            }
+        };
+
+        const STICKER_SVGS = {
+            heart: `
+                <svg viewBox="0 0 16 16" width="60" height="60" style="image-rendering: pixelated;" class="anim-heartbeat">
+                    <path d="M4,1 h2 v1 h1 v1 h2 v-1 h1 v-1 h2 v-1 h1 v-1 h1 v1 h1 v1 h1 v3 h-1 v-1 h-1 v1 h-1 v-1 h-1 v-1 h-2 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-3 h1 v-1 h1" fill="#ff7da7" />
+                    <path d="M2,4 h1 v3 h1 v1 h1 v1 h1 v-1 h1 v-1 h1 v1 h2 v-1 h1 v-1 h1 v-1 h1 v-1 h1 v-3 h1 v-1 h-1 v-1 h-2 v1 h-1 v-1 h-2 v-1 h-1" fill="none" stroke="#220e17" stroke-width="0.8"/>
+                    <rect x="4" y="3" width="1" height="1" fill="#ffffff" />
+                    <rect x="5" y="4" width="1" height="1" fill="#ffffff" />
+                </svg>
+            `,
+            star: `
+                <svg viewBox="0 0 16 16" width="60" height="60" style="image-rendering: pixelated;" class="anim-floatspin">
+                    <!-- Symmetrical Star Outline -->
+                    <rect x="7" y="1" width="2" height="14" fill="#332200"/>
+                    <rect x="1" y="7" width="14" height="2" fill="#332200"/>
+                    <rect x="6" y="3" width="4" height="10" fill="#332200"/>
+                    <rect x="3" y="6" width="10" height="4" fill="#332200"/>
+                    <rect x="5" y="4" width="6" height="8" fill="#332200"/>
+                    <rect x="4" y="5" width="8" height="6" fill="#332200"/>
+                    <!-- Symmetrical Star Fill -->
+                    <rect x="7" y="2" width="2" height="12" fill="#ffeb3b"/>
+                    <rect x="2" y="7" width="12" height="2" fill="#ffeb3b"/>
+                    <rect x="6" y="4" width="4" height="8" fill="#ffeb3b"/>
+                    <rect x="4" y="6" width="8" height="4" fill="#ffeb3b"/>
+                    <rect x="5" y="5" width="6" height="6" fill="#ffeb3b"/>
+                    <!-- Star Glowing Core -->
+                    <rect x="7" y="6" width="2" height="4" fill="#ffffff"/>
+                    <rect x="6" y="7" width="4" height="2" fill="#ffffff"/>
+                </svg>
+            `,
+            ghost: `
+                <svg viewBox="0 0 16 16" width="60" height="60" style="image-rendering: pixelated;" class="anim-ghosty">
+                    <path d="M5,2 h6 v1 h2 v2 h1 v7 h-1 v1 h-1 v-1 h-1 v1 h-1 v-1 h-2 v-1 h-1 v-1 h-1 v-7 h1 v-2 h2" fill="#120e20"/>
+                    <path d="M5,3 h6 v1 h1 v2 h1 v6 h-1 v-1 h-1 v-1 h-1 v1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-6 h1 v-2 h1" fill="#e8e5ff"/>
+                    <rect x="5" y="6" width="2" height="2" fill="#120e20"/>
+                    <rect x="9" y="6" width="2" height="2" fill="#120e20"/>
+                    <rect x="4" y="8" width="1" height="1" fill="#ff7da7"/>
+                    <rect x="11" y="8" width="1" height="1" fill="#ff7da7"/>
+                </svg>
+            `,
+            kitty: `
+                <svg viewBox="0 0 16 16" width="60" height="60" style="image-rendering: pixelated;" class="anim-bounce">
+                    <path d="M2,2 h2 v2 h8 v-2 h2 v-4 h1 v-6 h-14 v-6 h1" fill="#bb86fc" stroke="#120e20" stroke-width="0.8"/>
+                    <rect x="3" y="3" width="1" height="1" fill="#ff7da7" />
+                    <rect x="12" y="3" width="1" height="1" fill="#ff7da7" />
+                    <rect x="4" y="7" width="2" height="2" fill="#000000" />
+                    <rect x="10" y="7" width="2" height="2" fill="#000000" />
+                    <rect x="4" y="7" width="1" height="1" fill="#ffffff" />
+                    <rect x="10" y="7" width="1" height="1" fill="#ffffff" />
+                    <rect x="3" y="9" width="1" height="1" fill="#ff7da7" />
+                    <rect x="12" y="9" width="1" height="1" fill="#ff7da7" />
+                </svg>
+            `,
+            rainbow: `
+                <svg viewBox="0 0 16 16" width="60" height="60" style="image-rendering: pixelated;" class="anim-rainbow">
+                    <rect x="2" y="8" width="12" height="1" fill="#ff7da7"/>
+                    <rect x="3" y="9" width="10" height="1" fill="#ffeb3b"/>
+                    <rect x="4" y="10" width="8" height="1" fill="#8ec5fc"/>
+                    <path d="M5,4 h5 v1 h2 v1 h2 v4 h-11 v-2 h-1 v-2 h1 v-1 h2" fill="#120e20"/>
+                    <path d="M5,5 h5 v1 h1 v1 h1 v2 h-9 v-1 h-1 v-1 h1 v-1 h1" fill="#ffffff"/>
+                    <rect x="4" y="7" width="1" height="1" fill="#ff7da7"/>
+                    <rect x="9" y="7" width="1" height="1" fill="#ff7da7"/>
+                </svg>
+            `,
+            cherry: `
+                <svg viewBox="0 0 16 16" width="60" height="60" style="image-rendering: pixelated;" class="anim-sway">
+                    <path d="M8,2 h2 v1 h-1 v2 h-2 v-1" fill="none" stroke="#4caf50" stroke-width="1"/>
+                    <path d="M10,3 h2 v2 h-1 v3" fill="none" stroke="#4caf50" stroke-width="1"/>
+                    <path d="M4,9 h3 v3 h-3" fill="#e91e63" stroke="#220e17" stroke-width="0.8"/>
+                    <rect x="5" y="10" width="1" height="2" fill="#ffffff" />
+                    <path d="M9,9 h3 v3 h-3" fill="#e91e63" stroke="#220e17" stroke-width="0.8"/>
+                    <rect x="10" y="10" width="1" height="2" fill="#ffffff" />
+                </svg>
+            `,
+            mushroom: `
+                <svg viewBox="0 0 16 16" width="60" height="60" style="image-rendering: pixelated;" class="anim-mushroom">
+                    <path d="M5,2 h6 v1 h2 v2 h1 v4 h-12 v-4 h2 v-2 h1" fill="#120e20"/>
+                    <path d="M5,3 h6 v1 h1 v4 h-10 v-4 h1 v-1" fill="#ff7da7"/>
+                    <rect x="5" y="4" width="2" height="2" fill="#ffffff"/>
+                    <rect x="9" y="5" width="2" height="1" fill="#ffffff"/>
+                    <path d="M5,9 h6 v5 h-6" fill="#120e20"/>
+                    <path d="M6,9 h4 v4 h-4" fill="#fff5e6"/>
+                    <rect x="6" y="10" width="1" height="2" fill="#120e20"/>
+                    <rect x="8" y="10" width="1" height="2" fill="#120e20"/>
+                </svg>
+            `
+        };
+
+        window.spawnSticker = async (type) => {
+            if (!userId) return;
+
+            // Spawn near the top center of the planner area
+            const planner = document.getElementById('plannerPanel');
+            const rect = planner.getBoundingClientRect();
+            
+            const newSticker = {
+                type: type,
+                x: 100 + Math.random() * 80,
+                y: 120 + Math.random() * 80,
+                category: currentMode
+            };
+
+            if (isCloudMode) {
+                try {
+                    const stickersRef = collection(db, 'artifacts', appId, 'users', userId, 'stickers');
+                    await addDoc(stickersRef, newSticker);
+                    showToast("Placed a sticker! Drag it around 💖");
+                } catch (error) {
+                    console.error("Error adding sticker to Firebase:", error);
+                }
+            } else {
+                newSticker.id = 'sticker_' + Math.random().toString(36).substr(2, 9);
+                allStickers.push(newSticker);
+                saveLocalStickers();
+                renderStickers();
+                showToast("Placed locally! Drag it around 💖");
+            }
+        };
+
+        function renderStickers() {
+            // Remove existing stickers from the planner container first
+            const planner = document.getElementById('plannerPanel');
+            const existingStickers = planner.querySelectorAll('.draggable-sticker');
+            existingStickers.forEach(el => el.remove());
+
+            // Filter stickers for current workspace theme
+            const filteredStickers = allStickers.filter(s => s.category === currentMode);
+
+            filteredStickers.forEach(sticker => {
+                const el = document.createElement('div');
+                el.className = 'draggable-sticker';
+                el.id = sticker.id;
+                el.style.left = sticker.x + 'px';
+                el.style.top = sticker.y + 'px';
+                el.innerHTML = STICKER_SVGS[sticker.type] || '';
+
+                // Enable multi-touch and pointer drag interactions
+                setupDragInteraction(el, sticker);
+
+                // Double tap or double click to remove
+                el.addEventListener('dblclick', () => removeSticker(sticker.id));
+                el.addEventListener('touchend', handleDoubleTap(() => removeSticker(sticker.id)));
+
+                planner.appendChild(el);
+            });
+        }
+
+        function setupDragInteraction(element, stickerData) {
+            let active = false;
+            let currentX;
+            let currentY;
+            let initialX;
+            let initialY;
+            let xOffset = stickerData.x;
+            let yOffset = stickerData.y;
+
+            element.addEventListener('pointerdown', dragStart);
+
+            function dragStart(e) {
+                // Ensure we handle clicking internal SVGs
+                active = true;
+                initialX = e.clientX - xOffset;
+                initialY = e.clientY - yOffset;
+                
+                element.setPointerCapture(e.pointerId);
+                element.addEventListener('pointermove', drag);
+                element.addEventListener('pointerup', dragEnd);
+            }
+
+            function drag(e) {
+                if (!active) return;
+                e.preventDefault();
+
+                currentX = e.clientX - initialX;
+                currentY = e.clientY - initialY;
+
+                // Restrict sticker movement space within the bounds of the planner panel
+                const planner = document.getElementById('plannerPanel');
+                const maxX = planner.clientWidth - 70;
+                const maxY = planner.clientHeight - 70;
+
+                xOffset = Math.max(0, Math.min(currentX, maxX));
+                yOffset = Math.max(0, Math.min(currentY, maxY));
+
+                element.style.left = xOffset + 'px';
+                element.style.top = yOffset + 'px';
+            }
+
+            async function dragEnd(e) {
+                active = false;
+                element.releasePointerCapture(e.pointerId);
+                element.removeEventListener('pointermove', drag);
+                element.removeEventListener('pointerup', dragEnd);
+
+                // Update placement details in the database
+                stickerData.x = xOffset;
+                stickerData.y = yOffset;
+
+                if (isCloudMode) {
+                    try {
+                        const docRef = doc(db, 'artifacts', appId, 'users', userId, 'stickers', stickerData.id);
+                        await setDoc(docRef, {
+                            type: stickerData.type,
+                            x: stickerData.x,
+                            y: stickerData.y,
+                            category: stickerData.category
+                        }, { merge: true });
+                    } catch (err) {
+                        console.error("Error updating sticker coordinate positions:", err);
+                    }
+                } else {
+                    const idx = allStickers.findIndex(s => s.id === stickerData.id);
+                    if (idx > -1) {
+                        allStickers[idx] = stickerData;
+                        saveLocalStickers();
+                    }
+                }
+            }
+        }
+
+        // Help manage double-tap actions on mobile browsers natively
+        let lastTap = 0;
+        function handleDoubleTap(callback) {
+            return function (e) {
+                const currentTime = new Date().getTime();
+                const tapLength = currentTime - lastTap;
+                if (tapLength < 300 && tapLength > 0) {
+                    callback();
+                }
+                lastTap = currentTime;
+            };
+        }
+
+        async function removeSticker(id) {
+            if (!userId) return;
+
+            // Trigger a quick pixel particle splash
+            const el = document.getElementById(id);
+            if (el) {
+                const rect = el.getBoundingClientRect();
+                createSparkles(rect.left + 30, rect.top + 30);
+            }
+
+            if (isCloudMode) {
+                try {
+                    const docRef = doc(db, 'artifacts', appId, 'users', userId, 'stickers', id);
+                    await deleteDoc(docRef);
+                    showToast("Removed sticker! 🗑️");
+                } catch (error) {
+                    console.error("Error deleting sticker:", error);
+                }
+            } else {
+                allStickers = allStickers.filter(s => s.id !== id);
+                saveLocalStickers();
+                renderStickers();
+                showToast("Removed sticker! 🗑️");
+            }
+        }
+
+        // Start initialization process on page load
+        window.onload = function() {
+            initApp();
+        };
+    </script>
+</body>
+</html>
