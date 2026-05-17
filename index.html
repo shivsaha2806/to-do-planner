@@ -201,10 +201,10 @@
         }
     </style>
 </head>
-<body class="p-4 sm:p-8 flex justify-center items-start">
+<body class="p-4 sm:p-8 flex flex-col md:flex-row justify-center items-center md:items-start gap-6">
 
-    <!-- Responsive Main Planner Panel -->
-    <div id="plannerPanel" class="glass-panel w-full max-w-md md:max-w-3xl lg:max-w-4xl rounded-[2rem] p-6 sm:p-8 flex flex-col gap-6 relative mt-4 sm:mt-10 mb-32 md:mb-10">
+    <!-- Responsive Main Planner Panel (Optimized Width & Position) -->
+    <div id="plannerPanel" class="glass-panel w-full max-w-md md:max-w-2xl lg:max-w-[44rem] rounded-[2rem] p-5 sm:p-6 flex flex-col gap-5 relative mt-4 sm:mt-10 mb-4 md:mb-10">
         
         <!-- Header & Top Controller Elements -->
         <div class="flex flex-col md:flex-row justify-between items-center gap-4">
@@ -262,41 +262,41 @@
 
     </div>
 
-    <!-- Symmetrical Borderless Floating Y2K Companion Widget (Aligned Vertically) -->
-    <div id="tamagotchiContainer" class="fixed bottom-6 right-2 sm:right-6 z-50 flex items-end gap-3.5 select-none pointer-events-none">
+    <!-- Symmetrical Borderless Y2K Companion Widget (Responsive: Bottom-Right Float on Desktop vs Sits Centered Below Tasks on iPhone) -->
+    <div id="tamagotchiContainer" class="max-md:relative max-md:bottom-auto max-md:right-auto max-md:mt-4 max-md:mb-10 max-md:flex max-md:flex-col-reverse max-md:items-center max-md:w-full max-md:max-w-md max-md:mx-auto max-md:p-0 md:fixed md:bottom-6 md:right-6 md:z-50 md:flex md:items-end md:gap-3 select-none pointer-events-none">
         
-        <!-- Speech Bubble Dialog (Hugs the left side of the vertical pet widget) -->
-        <div id="tamaBubble" class="glass-card px-4 py-2.5 rounded-2xl text-xs font-black border border-pink-500/30 shadow-2xl max-w-[180px] text-center mb-6 transition-all duration-300 opacity-0 scale-90 pointer-events-auto transform translate-x-2 text-pink-300">
+        <!-- Speech Bubble Dialog (Hugs top/left natively) -->
+        <div id="tamaBubble" class="glass-card px-3.5 py-2 rounded-2xl text-[11px] font-black border border-pink-500/30 shadow-2xl max-w-[170px] text-center mb-2 md:mb-6 transition-all duration-300 opacity-0 scale-90 pointer-events-auto transform translate-x-0 md:translate-x-2 text-pink-300">
             Hop hop! Let's clear some tasks today, cutie! 🌸
         </div>
 
-        <!-- Vertical Glass Pill Container (Slim design, hugs right scroll margin safely) -->
-        <div class="flex flex-col items-center gap-3 bg-black/45 backdrop-blur-md p-4 rounded-[2.5rem] border border-white/10 shadow-2xl pointer-events-auto w-24 sm:w-28 text-center">
+        <!-- Glass Pill Container (Transforms dynamically to full-width row on mobile!) -->
+        <div class="flex flex-row md:flex-col items-center justify-between md:justify-start gap-4 md:gap-2.5 bg-black/45 backdrop-blur-md p-3.5 rounded-2xl md:rounded-[2.2rem] border border-white/10 shadow-2xl pointer-events-auto w-full md:w-24 text-center">
             
-            <!-- Floating Bunny Sprite Viewport ( Sharp, scalable, no clunky boxes ) -->
-            <div id="tamaPetSprite" class="w-16 h-16 flex items-center justify-center anim-pet-idle transition-all transform hover:scale-110 duration-200 cursor-pointer" onclick="window.petTama()" title="Pet Bunny!">
+            <!-- Floating Bunny Sprite Viewport -->
+            <div id="tamaPetSprite" class="w-12 h-12 flex-shrink-0 flex items-center justify-center anim-pet-idle transition-all transform hover:scale-110 duration-200 cursor-pointer" onclick="window.petTama()" title="Pet Bunny!">
                 <!-- SVG dynamically injected here -->
             </div>
 
-            <!-- Companion Stats -->
-            <div class="flex flex-col items-center gap-1 w-full">
-                <span class="text-xs font-black text-pink-300 tracking-tight">LVL <span id="tamaLvl" class="text-pink-400 font-extrabold">1</span></span>
+            <!-- Companion Stats (Adapts horizontally on mobile) -->
+            <div class="flex flex-col items-center gap-1 flex-1 md:flex-initial md:w-full">
+                <span class="text-[10px] font-black text-pink-300 tracking-tight">LVL <span id="tamaLvl" class="text-pink-400 font-extrabold">1</span></span>
                 
                 <!-- Sleek Glowing Exp Progress Bar -->
-                <div class="w-16 sm:w-20 bg-black/60 h-1.5 rounded-full overflow-hidden border border-white/10">
+                <div class="w-16 sm:w-20 md:w-16 bg-black/60 h-1.5 rounded-full overflow-hidden border border-white/10">
                     <div id="tamaExpBar" class="bg-pink-500 h-full transition-all duration-300" style="width: 10%"></div>
                 </div>
 
                 <!-- Completed task ratio dynamically updated -->
-                <span id="tamaExpText" class="text-[9px] text-gray-400 font-bold">0/5</span>
+                <span id="tamaExpText" class="text-[8px] text-gray-400 font-bold">0/5</span>
             </div>
 
-            <!-- Companion Action Buttons stacked side-by-side inside vertical pill -->
-            <div class="flex gap-2.5 justify-center w-full">
-                <button onclick="window.petTama()" class="w-8 h-8 rounded-full bg-pink-500/20 hover:bg-pink-500/30 text-pink-300 flex items-center justify-center text-xs shadow-md border border-pink-500/30 transition-transform active:scale-90 glow-pink" title="Pet Companion">
+            <!-- Companion Action Buttons -->
+            <div class="flex gap-2 justify-center flex-shrink-0">
+                <button onclick="window.petTama()" class="w-6 h-6 rounded-full bg-pink-500/20 hover:bg-pink-500/30 text-pink-300 flex items-center justify-center text-[10px] shadow-md border border-pink-500/30 transition-transform active:scale-90 glow-pink" title="Pet Companion">
                     👋
                 </button>
-                <button onclick="window.feedTama()" class="w-8 h-8 rounded-full bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 flex items-center justify-center text-xs shadow-md border border-blue-500/30 transition-transform active:scale-90 glow-blue" title="Feed Snack">
+                <button onclick="window.feedTama()" class="w-6 h-6 rounded-full bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 flex items-center justify-center text-[10px] shadow-md border border-blue-500/30 transition-transform active:scale-90 glow-blue" title="Feed Snack">
                     🍓
                 </button>
             </div>
