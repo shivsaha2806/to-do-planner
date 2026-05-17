@@ -69,6 +69,12 @@
             color: #888aa0 !important;
         }
 
+        /* Fix contrast of dropdown option elements */
+        option {
+            background-color: #120e20 !important;
+            color: #f3f4f6 !important;
+        }
+
         .cute-checkbox {
             appearance: none;
             width: 24px;
@@ -108,17 +114,13 @@
             z-index: 100;
         }
 
-        /* Custom Scrollbar for list container */
+        /* Invisible scrolling for task list container */
         .task-list-container::-webkit-scrollbar {
-            width: 6px;
+            display: none;
         }
-        .task-list-container::-webkit-scrollbar-track {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 10px;
-        }
-        .task-list-container::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.08);
-            border-radius: 10px;
+        .task-list-container {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
         }
         
         /* Toast Alert Container styling */
@@ -133,88 +135,76 @@
             bottom: 30px;
         }
 
-        /* Micro animations for Pixel Stickers */
-        @keyframes pixel-heartbeat {
-            0%, 100% { transform: scale(1) rotate(0deg); }
-            50% { transform: scale(1.15) rotate(2deg); }
-        }
-        @keyframes pixel-float-spin {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            50% { transform: translateY(-8px) rotate(15deg); }
-        }
-        @keyframes pixel-bounce {
+        /* Micro animations for Virtual Pet Bunny */
+        @keyframes pet-bob {
             0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            50% { transform: translateY(-4px); }
         }
-        @keyframes pixel-sway {
-            0%, 100% { transform: rotate(-8deg) translateY(0); }
-            50% { transform: rotate(8deg) translateY(-3px); }
+        @keyframes pet-bounce {
+            0%, 100% { transform: scale(1) translateY(0); }
+            30% { transform: scale(1.15, 0.85) translateY(0); }
+            50% { transform: scale(0.9, 1.1) translateY(-14px); }
+            70% { transform: scale(1.05, 0.95) translateY(0); }
         }
-        @keyframes pixel-ghosty {
-            0%, 100% { transform: translateY(0) translateX(0); }
-            50% { transform: translateY(-6px) translateX(4px); }
+        @keyframes pet-munch {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            25% { transform: scale(1.1, 0.9) rotate(-3deg); }
+            75% { transform: scale(0.9, 1.1) rotate(3deg); }
         }
-        @keyframes pixel-rainbow {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.08); }
-        }
-        @keyframes pixel-mushroom {
-            0%, 100% { transform: scaleY(1); }
-            50% { transform: scaleY(0.9) translateY(1.5px); }
-        }
-
-        .anim-heartbeat {
-            animation: pixel-heartbeat 1.2s ease-in-out infinite;
-        }
-        .anim-floatspin {
-            animation: pixel-float-spin 2.2s ease-in-out infinite;
-        }
-        .anim-bounce {
-            animation: pixel-bounce 1s ease-in-out infinite;
-        }
-        .anim-sway {
-            animation: pixel-sway 1.8s ease-in-out infinite;
-            transform-origin: bottom center;
-        }
-        .anim-ghosty {
-            animation: pixel-ghosty 2s ease-in-out infinite;
-        }
-        .anim-rainbow {
-            animation: pixel-rainbow 1.8s ease-in-out infinite;
-        }
-        .anim-mushroom {
-            animation: pixel-mushroom 1.4s ease-in-out infinite;
-            transform-origin: bottom center;
+        @keyframes heart-float {
+            0% { transform: translateY(0) scale(0.8); opacity: 0; }
+            20% { opacity: 1; }
+            100% { transform: translateY(-30px) scale(1.2); opacity: 0; }
         }
 
-        /* Draggable Sticker Styling */
-        .draggable-sticker {
+        /* Angel Wing Flutter animations for Stage 19+ */
+        @keyframes wing-flutter-left {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(-25deg) translateY(-2px); }
+        }
+        @keyframes wing-flutter-right {
+            0%, 100% { transform: rotate(0deg); }
+            50% { transform: rotate(25deg) translateY(-2px); }
+        }
+
+        .anim-pet-idle {
+            animation: pet-bob 1.8s ease-in-out infinite;
+        }
+        .anim-pet-joy {
+            animation: pet-bounce 0.6s ease-in-out infinite;
+        }
+        .anim-pet-munch {
+            animation: pet-munch 0.3s ease-in-out infinite;
+        }
+        .anim-wing-left {
+            animation: wing-flutter-left 0.6s ease-in-out infinite;
+            transform-origin: 4px 10px;
+        }
+        .anim-wing-right {
+            animation: wing-flutter-right 0.6s ease-in-out infinite;
+            transform-origin: 12px 10px;
+        }
+
+        .heart-float-effect {
+            animation: heart-float 1s ease-out forwards;
             position: absolute;
-            cursor: grab;
-            user-select: none;
-            touch-action: none;
-            z-index: 40;
-            filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.6));
-            transition: transform 0.1s ease-out;
+            pointer-events: none;
+            z-index: 60;
         }
-        .draggable-sticker:active {
-            cursor: grabbing;
-            transform: scale(1.1);
+
+        /* Hover glows */
+        .glow-pink:hover {
+            box-shadow: 0 0 15px rgba(255, 42, 109, 0.4);
         }
-        .sticker-tray-item {
-            cursor: pointer;
-            transition: transform 0.2s, filter 0.2s;
-        }
-        .sticker-tray-item:hover {
-            transform: scale(1.15);
-            filter: brightness(1.1);
+        .glow-blue:hover {
+            box-shadow: 0 0 15px rgba(0, 191, 255, 0.4);
         }
     </style>
 </head>
 <body class="p-4 sm:p-8 flex justify-center items-start">
 
     <!-- Responsive Main Planner Panel -->
-    <div id="plannerPanel" class="glass-panel w-full max-w-md md:max-w-3xl lg:max-w-4xl rounded-[2rem] p-6 sm:p-8 flex flex-col gap-6 relative mt-4 sm:mt-10 mb-10">
+    <div id="plannerPanel" class="glass-panel w-full max-w-md md:max-w-3xl lg:max-w-4xl rounded-[2rem] p-6 sm:p-8 flex flex-col gap-6 relative mt-4 sm:mt-10 mb-32 md:mb-10">
         
         <!-- Header & Top Controller Elements -->
         <div class="flex flex-col md:flex-row justify-between items-center gap-4">
@@ -229,11 +219,6 @@
                     <div class="font-bold text-gray-300 text-sm sm:text-base">Streak: <span id="streakCount" class="text-pink-400 font-extrabold">0</span></div>
                 </div>
 
-                <!-- Toggle Sticker Cabinet -->
-                <button id="toggleCabinetBtn" onclick="window.toggleCabinet()" class="glass-card px-4 py-2.5 rounded-2xl flex items-center gap-2 hover:bg-white/5 transition-all active:scale-95 text-xs sm:text-sm font-bold text-pink-300" title="Toggle Sticker Cabinet">
-                    <span>🎨</span> <span id="cabinetToggleText">Hide Cabinet</span>
-                </button>
-
                 <!-- Google Auth Profile Card -->
                 <div id="userProfileArea" class="glass-card px-4 py-2.5 rounded-2xl flex items-center gap-2 shadow-sm cursor-pointer hover:bg-white/5 transition-all active:scale-95">
                     <span class="text-xs font-black text-gray-400">Loading profile...</span>
@@ -244,117 +229,6 @@
                     <div id="personalToggle" class="px-4 py-2 rounded-full bg-pink-500/20 border border-pink-500/30 text-pink-300 font-bold transition-all text-xs sm:text-sm">Personal 🌸</div>
                     <div id="workToggle" class="px-4 py-2 rounded-full text-gray-500 font-bold transition-all text-xs sm:text-sm">Work 💻</div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Sticker Cabinet Drawer -->
-        <div id="stickerCabinet" class="glass-card rounded-2xl p-4 flex flex-col gap-2 transition-all duration-300">
-            <div class="flex items-center justify-between">
-                <span class="text-xs font-black text-pink-300 tracking-wider uppercase flex items-center gap-1" id="cabinetHeaderLabel">
-                    💖 Y2K Sticker Cabinet (Tap to place, double-tap to remove!)
-                </span>
-                <span class="text-[10px] text-gray-500 font-bold">Decorate your board!</span>
-            </div>
-            <div class="flex flex-wrap items-center gap-4 sm:gap-6 py-2.5 px-4 bg-black/40 rounded-xl justify-center">
-                
-                <!-- Pixel Heart Tray Item -->
-                <div class="sticker-tray-item anim-heartbeat" onclick="window.spawnSticker('heart')" title="Add Pixel Heart">
-                    <svg viewBox="0 0 16 16" width="38" height="38" style="image-rendering: pixelated;">
-                        <path d="M4,1 h2 v1 h1 v1 h2 v-1 h1 v-1 h2 v1 h1 v1 h1 v3 h-1 v-1 h-1 v1 h-1 v1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-3 h1 v-1 h1" fill="#ff7da7" />
-                        <path d="M2,4 h1 v3 h1 v1 h1 v1 h1 v1 h1 v1 h2 v-1 h1 v-1 h1 v-1 h1 v-1 h1 v-3 h1 v-1 h-1 v-1 h-2 v1 h-1 v-1 h-2 v1 h-1" fill="none" stroke="#220e17" stroke-width="1"/>
-                        <rect x="4" y="3" width="1" height="1" fill="#ffffff" />
-                        <rect x="5" y="4" width="1" height="1" fill="#ffffff" />
-                    </svg>
-                </div>
-
-                <!-- Upgraded Symmetrical Pixel Star Tray Item -->
-                <div class="sticker-tray-item anim-floatspin" onclick="window.spawnSticker('star')" title="Add Cyber Star">
-                    <svg viewBox="0 0 16 16" width="38" height="38" style="image-rendering: pixelated;">
-                        <!-- Symmetrical Star Outline -->
-                        <rect x="7" y="1" width="2" height="14" fill="#332200"/>
-                        <rect x="1" y="7" width="14" height="2" fill="#332200"/>
-                        <rect x="6" y="3" width="4" height="10" fill="#332200"/>
-                        <rect x="3" y="6" width="10" height="4" fill="#332200"/>
-                        <rect x="5" y="4" width="6" height="8" fill="#332200"/>
-                        <rect x="4" y="5" width="8" height="6" fill="#332200"/>
-                        <!-- Symmetrical Star Fill -->
-                        <rect x="7" y="2" width="2" height="12" fill="#ffeb3b"/>
-                        <rect x="2" y="7" width="12" height="2" fill="#ffeb3b"/>
-                        <rect x="6" y="4" width="4" height="8" fill="#ffeb3b"/>
-                        <rect x="4" y="6" width="8" height="4" fill="#ffeb3b"/>
-                        <rect x="5" y="5" width="6" height="6" fill="#ffeb3b"/>
-                        <!-- Star Glowing Core -->
-                        <rect x="7" y="6" width="2" height="4" fill="#ffffff"/>
-                        <rect x="6" y="7" width="4" height="2" fill="#ffffff"/>
-                    </svg>
-                </div>
-
-                <!-- Pixel Ghosty Boo -->
-                <div class="sticker-tray-item anim-ghosty" onclick="window.spawnSticker('ghost')" title="Add Ghosty Boo">
-                    <svg viewBox="0 0 16 16" width="38" height="38" style="image-rendering: pixelated;">
-                        <path d="M5,2 h6 v1 h2 v2 h1 v7 h-1 v-1 h-1 v1 h-1 v1 h-2 v-1 h-1 v-1 h-1 v1 h-1 v1 h-2 v-1 h-1 v-1 h-1 v-7 h1 v-2 h2" fill="#120e20"/>
-                        <path d="M5,3 h6 v1 h1 v2 h1 v6 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-6 h1 v-2 h1" fill="#e8e5ff"/>
-                        <rect x="5" y="6" width="2" height="2" fill="#120e20"/>
-                        <rect x="9" y="6" width="2" height="2" fill="#120e20"/>
-                        <rect x="4" y="8" width="1" height="1" fill="#ff7da7"/>
-                        <rect x="11" y="8" width="1" height="1" fill="#ff7da7"/>
-                    </svg>
-                </div>
-
-                <!-- Pixel Alien Cat Item -->
-                <div class="sticker-tray-item anim-bounce" onclick="window.spawnSticker('kitty')" title="Add Tamagotchi Pet">
-                    <svg viewBox="0 0 16 16" width="38" height="38" style="image-rendering: pixelated;">
-                        <path d="M2,2 h2 v2 h8 v-2 h2 v-4 h1 v6 h-14 v-6 h1" fill="#bb86fc" stroke="#120e20" stroke-width="0.8"/>
-                        <rect x="3" y="3" width="1" height="1" fill="#ff7da7" />
-                        <rect x="12" y="3" width="1" height="1" fill="#ff7da7" />
-                        <rect x="4" y="7" width="2" height="2" fill="#000000" />
-                        <rect x="10" y="7" width="2" height="2" fill="#000000" />
-                        <rect x="4" y="7" width="1" height="1" fill="#ffffff" />
-                        <rect x="10" y="7" width="1" height="1" fill="#ffffff" />
-                        <rect x="3" y="9" width="1" height="1" fill="#ff7da7" />
-                        <rect x="12" y="9" width="1" height="1" fill="#ff7da7" />
-                    </svg>
-                </div>
-
-                <!-- Pixel Rainbow Cloud -->
-                <div class="sticker-tray-item anim-rainbow" onclick="window.spawnSticker('rainbow')" title="Add Rainbow Cloud">
-                    <svg viewBox="0 0 16 16" width="38" height="38" style="image-rendering: pixelated;">
-                        <rect x="2" y="8" width="12" height="1" fill="#ff7da7"/>
-                        <rect x="3" y="9" width="10" height="1" fill="#ffeb3b"/>
-                        <rect x="4" y="10" width="8" height="1" fill="#8ec5fc"/>
-                        <path d="M5,4 h5 v1 h2 v1 h2 v4 h-11 v-2 h-1 v-2 h1 v-1 h2" fill="#120e20"/>
-                        <path d="M5,5 h5 v1 h1 v1 h1 v2 h-9 v-1 h-1 v-1 h-1 v-1 h1" fill="#ffffff"/>
-                        <rect x="4" y="7" width="1" height="1" fill="#ff7da7"/>
-                        <rect x="9" y="7" width="1" height="1" fill="#ff7da7"/>
-                    </svg>
-                </div>
-
-                <!-- Pixel Cherry Item -->
-                <div class="sticker-tray-item anim-sway" onclick="window.spawnSticker('cherry')" title="Add Twin Cherries">
-                    <svg viewBox="0 0 16 16" width="38" height="38" style="image-rendering: pixelated;">
-                        <path d="M8,2 h2 v1 h-1 v2 h-2 v-1" fill="none" stroke="#4caf50" stroke-width="1"/>
-                        <path d="M10,3 h2 v2 h-1 v3" fill="none" stroke="#4caf50" stroke-width="1"/>
-                        <path d="M4,9 h3 v3 h-3" fill="#e91e63" stroke="#220e17" stroke-width="0.8"/>
-                        <rect x="5" y="10" width="1" height="1" fill="#ffffff" />
-                        <path d="M9,9 h3 v3 h-3" fill="#e91e63" stroke="#220e17" stroke-width="0.8"/>
-                        <rect x="10" y="10" width="1" height="1" fill="#ffffff" />
-                    </svg>
-                </div>
-
-                <!-- Pixel Magic Mushroom -->
-                <div class="sticker-tray-item anim-mushroom" onclick="window.spawnSticker('mushroom')" title="Add Magic Shroom">
-                    <svg viewBox="0 0 16 16" width="38" height="38" style="image-rendering: pixelated;">
-                        <path d="M5,2 h6 v1 h2 v2 h1 v4 h-12 v-4 h2 v-2 h1" fill="#120e20"/>
-                        <path d="M5,3 h6 v1 h1 v4 h-10 v-4 h1 v-1" fill="#ff7da7"/>
-                        <rect x="5" y="4" width="2" height="2" fill="#ffffff"/>
-                        <rect x="9" y="5" width="2" height="1" fill="#ffffff"/>
-                        <path d="M5,9 h6 v5 h-6" fill="#120e20"/>
-                        <path d="M6,9 h4 v4 h-4" fill="#fff5e6"/>
-                        <rect x="6" y="10" width="1" height="2" fill="#120e20"/>
-                        <rect x="8" y="10" width="1" height="2" fill="#120e20"/>
-                    </svg>
-                </div>
-
             </div>
         </div>
 
@@ -386,6 +260,100 @@
             </div>
         </div>
 
+    </div>
+
+    <!-- Symmetrical Borderless Floating Y2K Companion Widget (Aligned Vertically) -->
+    <div id="tamagotchiContainer" class="fixed bottom-6 right-2 sm:right-6 z-50 flex items-end gap-3.5 select-none pointer-events-none">
+        
+        <!-- Speech Bubble Dialog (Hugs the left side of the vertical pet widget) -->
+        <div id="tamaBubble" class="glass-card px-4 py-2.5 rounded-2xl text-xs font-black border border-pink-500/30 shadow-2xl max-w-[180px] text-center mb-6 transition-all duration-300 opacity-0 scale-90 pointer-events-auto transform translate-x-2 text-pink-300">
+            Hop hop! Let's clear some tasks today, cutie! 🌸
+        </div>
+
+        <!-- Vertical Glass Pill Container (Slim design, hugs right scroll margin safely) -->
+        <div class="flex flex-col items-center gap-3 bg-black/45 backdrop-blur-md p-4 rounded-[2.5rem] border border-white/10 shadow-2xl pointer-events-auto w-24 sm:w-28 text-center">
+            
+            <!-- Floating Bunny Sprite Viewport ( Sharp, scalable, no clunky boxes ) -->
+            <div id="tamaPetSprite" class="w-16 h-16 flex items-center justify-center anim-pet-idle transition-all transform hover:scale-110 duration-200 cursor-pointer" onclick="window.petTama()" title="Pet Bunny!">
+                <!-- SVG dynamically injected here -->
+            </div>
+
+            <!-- Companion Stats -->
+            <div class="flex flex-col items-center gap-1 w-full">
+                <span class="text-xs font-black text-pink-300 tracking-tight">LVL <span id="tamaLvl" class="text-pink-400 font-extrabold">1</span></span>
+                
+                <!-- Sleek Glowing Exp Progress Bar -->
+                <div class="w-16 sm:w-20 bg-black/60 h-1.5 rounded-full overflow-hidden border border-white/10">
+                    <div id="tamaExpBar" class="bg-pink-500 h-full transition-all duration-300" style="width: 10%"></div>
+                </div>
+
+                <!-- Completed task ratio dynamically updated -->
+                <span id="tamaExpText" class="text-[9px] text-gray-400 font-bold">0/5</span>
+            </div>
+
+            <!-- Companion Action Buttons stacked side-by-side inside vertical pill -->
+            <div class="flex gap-2.5 justify-center w-full">
+                <button onclick="window.petTama()" class="w-8 h-8 rounded-full bg-pink-500/20 hover:bg-pink-500/30 text-pink-300 flex items-center justify-center text-xs shadow-md border border-pink-500/30 transition-transform active:scale-90 glow-pink" title="Pet Companion">
+                    👋
+                </button>
+                <button onclick="window.feedTama()" class="w-8 h-8 rounded-full bg-blue-500/20 hover:bg-blue-500/30 text-blue-300 flex items-center justify-center text-xs shadow-md border border-blue-500/30 transition-transform active:scale-90 glow-blue" title="Feed Snack">
+                    🍓
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Live Auth Diagnostics Modal (Dynamic Solution!) -->
+    <div id="authDiagnosticModal" class="fixed inset-0 bg-black/90 backdrop-blur-md hidden items-center justify-center z-50 p-4 transition-all">
+        <div class="glass-panel max-w-lg w-full rounded-3xl p-6 sm:p-8 relative border-red-500/30 shadow-2xl flex flex-col gap-5">
+            <button onclick="window.closeAuthDiagnostic()" class="absolute top-4 right-4 text-gray-400 hover:text-white text-2xl font-bold transition-colors">&times;</button>
+            
+            <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-red-950/50 border border-red-500/30 flex items-center justify-center text-red-400 text-xl font-bold">⚠️</div>
+                <div>
+                    <h3 class="text-xl font-black text-red-400">Google Auth Diagnostic</h3>
+                    <p class="text-xs text-gray-400 font-bold">Let's connect your planner instantly!</p>
+                </div>
+            </div>
+
+            <div class="text-sm text-gray-300 space-y-4">
+                <p>Firebase blocked your sign-in popup. This happens because the domain your planner is currently running on has not been whitelisted inside your Firebase Authorized Domains.</p>
+                
+                <div class="bg-black/40 p-4 rounded-xl border border-white/5 space-y-2">
+                    <p class="text-xs font-black text-pink-300 uppercase tracking-wider">🎯 Your Diagnostic Details:</p>
+                    <div class="text-xs text-gray-400 space-y-1">
+                        <div><strong class="text-gray-200">Error Code:</strong> <span id="diagErrorCode" class="text-red-300 font-mono bg-red-950/30 px-1.5 py-0.5 rounded">None</span></div>
+                        <div><strong class="text-gray-200">Error Msg:</strong> <span id="diagErrorMsg" class="font-mono">No error loaded yet.</span></div>
+                    </div>
+                </div>
+
+                <div class="space-y-2.5">
+                    <p class="text-xs font-black text-pink-300 uppercase tracking-wider flex items-center gap-1">🔧 Step-by-Step Whitelist Guide (Easy 3 Clicks):</p>
+                    <ol class="list-decimal list-inside space-y-2 text-xs text-gray-300">
+                        <li>Go to your <a href="https://console.firebase.google.com" target="_blank" class="text-blue-400 underline hover:text-blue-300 font-bold">Firebase Console</a> and open project <strong>to-do-plannee</strong>.</li>
+                        <li>On the left menu, click <strong>Build</strong> &rarr; <strong>Authentication</strong> &rarr; select the <strong>Settings</strong> tab at the top.</li>
+                        <li>Find <strong>Authorized domains</strong> on that page, click <strong class="text-pink-300">Add domain</strong>, and paste this exact domain value:
+                            <div class="flex items-center gap-2 mt-1.5 bg-black/50 p-2.5 rounded-lg border border-white/5 font-mono text-xs text-pink-300 justify-between">
+                                <span id="currentHostString">detecting...</span>
+                                <button onclick="window.copyHostToClipboard()" class="bg-pink-500 hover:bg-pink-600 text-white font-black px-2.5 py-1 rounded text-[10px] tracking-wider transition-colors">
+                                    COPY 📋
+                                </button>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+            </div>
+
+            <div class="flex gap-3 mt-1">
+                <button onclick="window.closeAuthDiagnostic()" class="flex-1 bg-white/5 hover:bg-white/10 text-gray-300 font-bold py-3 rounded-xl border border-white/5 transition-all text-sm">
+                    Dismiss
+                </button>
+                <a href="https://console.firebase.google.com" target="_blank" class="flex-1 bg-pink-500 hover:bg-pink-600 text-white font-black py-3 rounded-xl shadow-lg transition-all text-sm text-center flex items-center justify-center gap-1">
+                    Open Firebase Console 🚀
+                </a>
+            </div>
+        </div>
     </div>
 
     <!-- Info Modal for Firebase Setup Guide & Local Mode Warning -->
@@ -441,7 +409,7 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
         import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged, GoogleAuthProvider, signInWithPopup, signOut } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, setDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, updateDoc, deleteDoc, doc, onSnapshot, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
 
         // Integrated User Project config credentials
         const firebaseConfig = {
@@ -458,11 +426,15 @@
         let app, db, auth, userId;
         let currentMode = 'Personal';
         let allTasks = [];
-        let allStickers = [];
         let isCloudMode = false;
         let streak = parseInt(localStorage.getItem('plannerStreak') || '0');
         let firestoreTasksUnsubscribe = null;
-        let firestoreStickersUnsubscribe = null;
+
+        // Tamagotchi State variables
+        let petLvl = 1;
+        let petExp = 0; // Tracks completed tasks strictly towards current level requirement
+        let petState = 'idle'; // idle, joy, munch
+        let idleTalkInterval = null;
 
         // Set streak values in user interface
         document.getElementById('streakCount').innerText = streak;
@@ -472,12 +444,10 @@
         document.getElementById('dateInput').value = todayDate.getFullYear() + '-' + String(todayDate.getMonth() + 1).padStart(2, '0') + '-' + String(todayDate.getDate()).padStart(2, '0');
 
         async function initApp() {
-            // Restore hidden state of cabinet
-            const cabinetVisible = localStorage.getItem('cabinetVisible');
-            if (cabinetVisible === 'false') {
-                document.getElementById('stickerCabinet').classList.add('hidden');
-                document.getElementById('cabinetToggleText').innerText = "Show Cabinet";
-            }
+            // Restore virtual pet offline levels
+            petLvl = parseInt(localStorage.getItem('tamaPetLevel') || '1');
+            petExp = parseInt(localStorage.getItem('tamaPetExp') || '0');
+            updatePetUI();
 
             try {
                 app = initializeApp(firebaseConfig);
@@ -491,6 +461,7 @@
                         isCloudMode = true;
                         updateUserProfileUI(user);
                         setupDatabaseListener();
+                        await syncPetCloudState();
                     } else {
                         // User is signed out, let's sign them in anonymously by default
                         try {
@@ -509,6 +480,9 @@
                 console.warn("Firebase Init failed! Falling back to Local Storage Mode safely.", error);
                 enableLocalFallback("Offline Mode active.");
             }
+
+            // Start occasional Tamagotchi chatter
+            setupTamaChatter();
         }
 
         function updateUserProfileUI(user) {
@@ -543,9 +517,47 @@
                 await signInWithPopup(auth, provider);
                 showToast("Welcome! Signed in with Google 💖");
             } catch (error) {
-                console.error("Google Sign-In Error:", error);
-                showToast("Could not sign in. Make sure Google Auth is enabled! 🌸");
+                console.error("Google Sign-In Error details:", error);
+                showAuthDiagnostic(error);
             }
+        };
+
+        function showAuthDiagnostic(error) {
+            const modal = document.getElementById('authDiagnosticModal');
+            const codeEl = document.getElementById('diagErrorCode');
+            const msgEl = document.getElementById('diagErrorMsg');
+            const hostEl = document.getElementById('currentHostString');
+
+            // Parse detailed diagnostics
+            codeEl.innerText = error.code || 'unknown';
+            msgEl.innerText = error.message || 'No explicit message returned.';
+            hostEl.innerText = window.location.hostname || 'localhost';
+
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+        }
+
+        window.closeAuthDiagnostic = () => {
+            const modal = document.getElementById('authDiagnosticModal');
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        };
+
+        window.copyHostToClipboard = () => {
+            const host = window.location.hostname || 'localhost';
+            
+            // Modern copy fallback mechanism compatible with iframe containment sandbox
+            const textarea = document.createElement('textarea');
+            textarea.value = host;
+            document.body.appendChild(textarea);
+            textarea.select();
+            try {
+                document.execCommand('copy');
+                showToast("Copied domain! Paste into Firebase 📋");
+            } catch (err) {
+                showToast("Failed to copy. Type manually!");
+            }
+            document.body.removeChild(textarea);
         };
 
         window.showSignOutConfirm = () => {
@@ -588,7 +600,6 @@
             }
             
             loadLocalTasks();
-            loadLocalStickers();
         }
 
         window.showStatusInfo = () => {
@@ -613,16 +624,6 @@
             localStorage.setItem('localPlannerTasks', JSON.stringify(allTasks));
         }
 
-        function loadLocalStickers() {
-            const stored = localStorage.getItem('localPlannerStickers');
-            allStickers = stored ? JSON.parse(stored) : [];
-            renderStickers();
-        }
-
-        function saveLocalStickers() {
-            localStorage.setItem('localPlannerStickers', JSON.stringify(allStickers));
-        }
-
         function setupDatabaseListener() {
             if (!userId || !isCloudMode) return;
             
@@ -630,12 +631,8 @@
             if (firestoreTasksUnsubscribe) {
                 firestoreTasksUnsubscribe();
             }
-            if (firestoreStickersUnsubscribe) {
-                firestoreStickersUnsubscribe();
-            }
 
             const tasksRef = collection(db, 'artifacts', appId, 'users', userId, 'tasks');
-            const stickersRef = collection(db, 'artifacts', appId, 'users', userId, 'stickers');
             
             // Listen for tasks
             firestoreTasksUnsubscribe = onSnapshot(tasksRef, (snapshot) => {
@@ -657,24 +654,6 @@
             }, (error) => {
                 console.error("Realtime tasks sync issue:", error);
                 enableLocalFallback("Sync failed. Local backup active.");
-            });
-
-            // Listen for stickers
-            firestoreStickersUnsubscribe = onSnapshot(stickersRef, (snapshot) => {
-                allStickers = [];
-                snapshot.forEach((doc) => {
-                    const data = doc.data();
-                    allStickers.push({
-                        id: doc.id,
-                        type: data.type,
-                        x: data.x,
-                        y: data.y,
-                        category: data.category || 'Personal'
-                    });
-                });
-                renderStickers();
-            }, (error) => {
-                console.error("Realtime stickers sync issue:", error);
             });
         }
 
@@ -726,16 +705,18 @@
                 const tagColor = getTagColor(task.tag);
 
                 const taskEl = document.createElement('div');
-                taskEl.className = `glass-card p-4 rounded-2xl flex items-center justify-between gap-3 ${task.isCompleted ? 'opacity-40' : ''} relative overflow-hidden`;
+                // Added flex-shrink-0 to completely resolve the flex card squishing/text cutting bug!
+                taskEl.className = `glass-card p-4 rounded-2xl flex items-start justify-between gap-3 flex-shrink-0 ${task.isCompleted ? 'opacity-40' : ''} relative overflow-hidden`;
                 
                 taskEl.innerHTML = `
-                    <div class="flex items-center gap-4 flex-1 min-w-0">
-                        <input type="checkbox" class="cute-checkbox flex-shrink-0" ${task.isCompleted ? 'checked' : ''} onchange="window.toggleTask('${task.id}', event)">
-                        <div class="flex flex-col min-w-0">
-                            <span class="font-bold text-gray-100 text-lg truncate ${task.isCompleted ? 'line-through text-gray-500' : ''}">
+                    <div class="flex items-start gap-4 flex-1 min-w-0">
+                        <input type="checkbox" class="cute-checkbox flex-shrink-0 mt-1" ${task.isCompleted ? 'checked' : ''} onchange="window.toggleTask('${task.id}', event)">
+                        <div class="flex flex-col min-w-0 flex-1">
+                            <!-- Wrap text beautifully instead of cutting it off -->
+                            <span class="font-bold text-gray-100 text-sm sm:text-base md:text-lg break-words leading-snug ${task.isCompleted ? 'line-through text-gray-500' : ''}">
                                 ${task.title}
                             </span>
-                            <div class="flex flex-wrap items-center gap-2 mt-1">
+                            <div class="flex flex-wrap items-center gap-2 mt-1.5">
                                 ${snoozedBadge}
                                 <span class="${tagColor} text-xs font-bold px-2 py-0.5 rounded-md">${task.tag}</span>
                                 <span class="text-xs text-gray-400 bg-white/5 border border-white/5 px-2 py-0.5 rounded-md font-semibold">🌱 Created: ${createdStr}</span>
@@ -789,25 +770,6 @@
             }
         }
 
-        // Hide/Show Sticker Drawer container viewports
-        window.toggleCabinet = () => {
-            const cabinet = document.getElementById('stickerCabinet');
-            const toggleText = document.getElementById('cabinetToggleText');
-            const isCurrentlyHidden = cabinet.classList.contains('hidden');
-
-            if (isCurrentlyHidden) {
-                cabinet.classList.remove('hidden');
-                toggleText.innerText = "Hide Cabinet";
-                localStorage.setItem('cabinetVisible', 'true');
-                showToast("Cabinet open! 🎨");
-            } else {
-                cabinet.classList.add('hidden');
-                toggleText.innerText = "Show Cabinet";
-                localStorage.setItem('cabinetVisible', 'false');
-                showToast("Cabinet hidden 🤫");
-            }
-        };
-
         // Align sign-in button with active theme accent shades
         function adjustModeColorsForAuthBtn() {
             const btnText = document.getElementById('googleSignInBtnText');
@@ -835,8 +797,6 @@
             
             const pt = document.getElementById('personalToggle');
             const wt = document.getElementById('workToggle');
-            const cabBtn = document.getElementById('toggleCabinetBtn');
-            const cabLabel = document.getElementById('cabinetHeaderLabel');
             
             if (currentMode === 'Work') {
                 pt.className = "px-4 py-2 rounded-full text-gray-500 font-bold transition-all text-xs sm:text-sm";
@@ -846,10 +806,6 @@
                 document.getElementById('taskInput').classList.replace('focus:border-pink-300', 'focus:border-blue-300');
                 document.getElementById('tagInput').classList.replace('focus:border-pink-300', 'focus:border-blue-300');
                 document.getElementById('dateInput').classList.replace('focus:border-pink-300', 'focus:border-blue-300');
-                
-                // Toggle styles for cabinet controls
-                cabBtn.classList.replace('text-pink-300', 'text-blue-300');
-                cabLabel.classList.replace('text-pink-300', 'text-blue-300');
             } else {
                 wt.className = "px-4 py-2 rounded-full text-gray-500 font-bold transition-all text-xs sm:text-sm";
                 pt.className = "px-4 py-2 rounded-full bg-pink-500/20 border border-pink-500/30 text-pink-300 font-bold transition-all text-xs sm:text-sm";
@@ -858,15 +814,12 @@
                 document.getElementById('taskInput').classList.replace('focus:border-blue-300', 'focus:border-pink-300');
                 document.getElementById('tagInput').classList.replace('focus:border-blue-300', 'focus:border-pink-300');
                 document.getElementById('dateInput').classList.replace('focus:border-blue-300', 'focus:border-pink-300');
-                
-                // Toggle styles for cabinet controls
-                cabBtn.classList.replace('text-blue-300', 'text-pink-300');
-                cabLabel.classList.replace('text-blue-300', 'text-pink-300');
             }
             
             adjustModeColorsForAuthBtn();
             renderTasks();
-            renderStickers();
+            renderPetSprite();
+            triggerTamaSpeech("Hop! Swapped workspaces! Ready to clear lists? 💻🌸");
         };
 
         // Form submission logic
@@ -907,6 +860,8 @@
                 renderTasks();
                 showToast("Saved locally! 💾");
             }
+            
+            triggerTamaReaction('add');
         });
 
         // Toggle completed state
@@ -926,6 +881,7 @@
                         localStorage.setItem('plannerStreak', streak);
                         document.getElementById('streakCount').innerText = streak;
                         showToast("Yay! Completed! ✨");
+                        triggerTamaReaction('complete');
                     }
                 } catch (error) {
                     console.error("Error updating checklist:", error);
@@ -943,6 +899,7 @@
                         localStorage.setItem('plannerStreak', streak);
                         document.getElementById('streakCount').innerText = streak;
                         showToast("Yay! Completed! ✨");
+                        triggerTamaReaction('complete');
                     }
                     renderTasks();
                 }
@@ -977,6 +934,7 @@
                     showToast("Snoozed! See you tomorrow 😴");
                 }
             }
+            triggerTamaReaction('snooze');
         };
 
         // Permanently delete document entries
@@ -998,264 +956,604 @@
                 renderTasks();
                 showToast("Task deleted 🗑️");
             }
+            triggerTamaReaction('delete');
         };
 
-        const STICKER_SVGS = {
-            heart: `
-                <svg viewBox="0 0 16 16" width="60" height="60" style="image-rendering: pixelated;" class="anim-heartbeat">
-                    <path d="M4,1 h2 v1 h1 v1 h2 v-1 h1 v-1 h2 v-1 h1 v-1 h1 v1 h1 v1 h1 v3 h-1 v-1 h-1 v1 h-1 v-1 h-1 v-1 h-2 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-3 h1 v-1 h1" fill="#ff7da7" />
-                    <path d="M2,4 h1 v3 h1 v1 h1 v1 h1 v-1 h1 v-1 h1 v1 h2 v-1 h1 v-1 h1 v-1 h1 v-1 h1 v-3 h1 v-1 h-1 v-1 h-2 v1 h-1 v-1 h-2 v-1 h-1" fill="none" stroke="#220e17" stroke-width="0.8"/>
-                    <rect x="4" y="3" width="1" height="1" fill="#ffffff" />
-                    <rect x="5" y="4" width="1" height="1" fill="#ffffff" />
-                </svg>
-            `,
-            star: `
-                <svg viewBox="0 0 16 16" width="60" height="60" style="image-rendering: pixelated;" class="anim-floatspin">
-                    <!-- Symmetrical Star Outline -->
-                    <rect x="7" y="1" width="2" height="14" fill="#332200"/>
-                    <rect x="1" y="7" width="14" height="2" fill="#332200"/>
-                    <rect x="6" y="3" width="4" height="10" fill="#332200"/>
-                    <rect x="3" y="6" width="10" height="4" fill="#332200"/>
-                    <rect x="5" y="4" width="6" height="8" fill="#332200"/>
-                    <rect x="4" y="5" width="8" height="6" fill="#332200"/>
-                    <!-- Symmetrical Star Fill -->
-                    <rect x="7" y="2" width="2" height="12" fill="#ffeb3b"/>
-                    <rect x="2" y="7" width="12" height="2" fill="#ffeb3b"/>
-                    <rect x="6" y="4" width="4" height="8" fill="#ffeb3b"/>
-                    <rect x="4" y="6" width="8" height="4" fill="#ffeb3b"/>
-                    <rect x="5" y="5" width="6" height="6" fill="#ffeb3b"/>
-                    <!-- Star Glowing Core -->
-                    <rect x="7" y="6" width="2" height="4" fill="#ffffff"/>
-                    <rect x="6" y="7" width="4" height="2" fill="#ffffff"/>
-                </svg>
-            `,
-            ghost: `
-                <svg viewBox="0 0 16 16" width="60" height="60" style="image-rendering: pixelated;" class="anim-ghosty">
-                    <path d="M5,2 h6 v1 h2 v2 h1 v7 h-1 v1 h-1 v-1 h-1 v1 h-1 v-1 h-2 v-1 h-1 v-1 h-1 v-7 h1 v-2 h2" fill="#120e20"/>
-                    <path d="M5,3 h6 v1 h1 v2 h1 v6 h-1 v-1 h-1 v-1 h-1 v1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-1 h-1 v-6 h1 v-2 h1" fill="#e8e5ff"/>
-                    <rect x="5" y="6" width="2" height="2" fill="#120e20"/>
-                    <rect x="9" y="6" width="2" height="2" fill="#120e20"/>
-                    <rect x="4" y="8" width="1" height="1" fill="#ff7da7"/>
-                    <rect x="11" y="8" width="1" height="1" fill="#ff7da7"/>
-                </svg>
-            `,
-            kitty: `
-                <svg viewBox="0 0 16 16" width="60" height="60" style="image-rendering: pixelated;" class="anim-bounce">
-                    <path d="M2,2 h2 v2 h8 v-2 h2 v-4 h1 v-6 h-14 v-6 h1" fill="#bb86fc" stroke="#120e20" stroke-width="0.8"/>
-                    <rect x="3" y="3" width="1" height="1" fill="#ff7da7" />
-                    <rect x="12" y="3" width="1" height="1" fill="#ff7da7" />
-                    <rect x="4" y="7" width="2" height="2" fill="#000000" />
-                    <rect x="10" y="7" width="2" height="2" fill="#000000" />
-                    <rect x="4" y="7" width="1" height="1" fill="#ffffff" />
-                    <rect x="10" y="7" width="1" height="1" fill="#ffffff" />
-                    <rect x="3" y="9" width="1" height="1" fill="#ff7da7" />
-                    <rect x="12" y="9" width="1" height="1" fill="#ff7da7" />
-                </svg>
-            `,
-            rainbow: `
-                <svg viewBox="0 0 16 16" width="60" height="60" style="image-rendering: pixelated;" class="anim-rainbow">
-                    <rect x="2" y="8" width="12" height="1" fill="#ff7da7"/>
-                    <rect x="3" y="9" width="10" height="1" fill="#ffeb3b"/>
-                    <rect x="4" y="10" width="8" height="1" fill="#8ec5fc"/>
-                    <path d="M5,4 h5 v1 h2 v1 h2 v4 h-11 v-2 h-1 v-2 h1 v-1 h2" fill="#120e20"/>
-                    <path d="M5,5 h5 v1 h1 v1 h1 v2 h-9 v-1 h-1 v-1 h1 v-1 h1" fill="#ffffff"/>
-                    <rect x="4" y="7" width="1" height="1" fill="#ff7da7"/>
-                    <rect x="9" y="7" width="1" height="1" fill="#ff7da7"/>
-                </svg>
-            `,
-            cherry: `
-                <svg viewBox="0 0 16 16" width="60" height="60" style="image-rendering: pixelated;" class="anim-sway">
-                    <path d="M8,2 h2 v1 h-1 v2 h-2 v-1" fill="none" stroke="#4caf50" stroke-width="1"/>
-                    <path d="M10,3 h2 v2 h-1 v3" fill="none" stroke="#4caf50" stroke-width="1"/>
-                    <path d="M4,9 h3 v3 h-3" fill="#e91e63" stroke="#220e17" stroke-width="0.8"/>
-                    <rect x="5" y="10" width="1" height="2" fill="#ffffff" />
-                    <path d="M9,9 h3 v3 h-3" fill="#e91e63" stroke="#220e17" stroke-width="0.8"/>
-                    <rect x="10" y="10" width="1" height="2" fill="#ffffff" />
-                </svg>
-            `,
-            mushroom: `
-                <svg viewBox="0 0 16 16" width="60" height="60" style="image-rendering: pixelated;" class="anim-mushroom">
-                    <path d="M5,2 h6 v1 h2 v2 h1 v4 h-12 v-4 h2 v-2 h1" fill="#120e20"/>
-                    <path d="M5,3 h6 v1 h1 v4 h-10 v-4 h1 v-1" fill="#ff7da7"/>
-                    <rect x="5" y="4" width="2" height="2" fill="#ffffff"/>
-                    <rect x="9" y="5" width="2" height="1" fill="#ffffff"/>
-                    <path d="M5,9 h6 v5 h-6" fill="#120e20"/>
-                    <path d="M6,9 h4 v4 h-4" fill="#fff5e6"/>
-                    <rect x="6" y="10" width="1" height="2" fill="#120e20"/>
-                    <rect x="8" y="10" width="1" height="2" fill="#120e20"/>
-                </svg>
-            `
-        };
+        /* ================= TAMAGOTCHI PET LOGIC ================= */
 
-        window.spawnSticker = async (type) => {
-            if (!userId) return;
+        // Evaluates required tasks dynamically based on user requirements
+        function getRequiredTasksForLevel(lvl) {
+            if (lvl <= 5) return 5;
+            if (lvl <= 15) return 10;
+            return 15;
+        }
 
-            // Spawn near the top center of the planner area
-            const planner = document.getElementById('plannerPanel');
-            const rect = planner.getBoundingClientRect();
+        // Resolves the name of the stage corresponding to each of the 30 evolution levels
+        function getStageName(lvl) {
+            if (lvl === 1) return "Cosmic Egg 🥚";
+            if (lvl === 2) return "Sprout Puffball 🌱";
+            if (lvl === 3) return "Floppy Baby Bun 🍼";
+            if (lvl === 4) return "Leafy Puffball 🍀";
+            if (lvl === 5) return "Blushing Toddler Bun 🍼";
+            if (lvl === 6) return "Tiny Stand-Up Bun 🌸";
+            if (lvl === 7) return "Cozy Bunny 🐰";
+            if (lvl === 8) return "Ear-Ribbon Bun 🎀";
+            if (lvl === 9) return "Double Ribbon Bun 🎀";
+            if (lvl === 10) return "Strawberry Hood Bun 🍓";
+            if (lvl === 11) return "Cherry Hat Bun 🍒";
+            if (lvl === 12) return "Mushroom Cap Bun 🍄";
+            if (lvl === 13) return "Sorcerer Star Bun 🔮";
+            if (lvl === 14) return "Mystic Cloak Bun 🌌";
+            if (lvl === 15) return "Cyber Goggles Bun 🕶️";
+            if (lvl === 16) return "Golden Bell Bun 🔔";
+            if (lvl === 17) return "Tiny Halo Bun 💫";
+            if (lvl === 18) return "Radiating Halo Bun 🌟";
+            if (lvl === 19) return "One-Winged Angel Bun 🪶";
+            if (lvl === 20) return "Dual Wing Seraph Bun 👼";
+            if (lvl === 21) return "Archangel Pink Feather Bun 💗";
+            if (lvl === 22) return "Cyber Cosmic Bun 🚀";
+            if (lvl === 23) return "Fire Aura Bun 🔥";
+            if (lvl === 24) return "Water Aura Bun 💧";
+            if (lvl === 25) return "Nature Aura Bun 🍃";
+            if (lvl === 26) return "Thunder Aura Bun ⚡";
+            if (lvl === 27) return "Arch-Deity Crowned Bun 👑";
+            if (lvl === 28) return "Infinite Double Halo Deity Bun ♾️";
+            if (lvl === 29) return "Supreme Celestial Deity Bun 🌌";
+            return "Chrono Primordial Bunny God ⏱️👑✨";
+        }
+
+        // Upgraded 30-Stage Symmetrical Pixel-Art Vector Generator (With 100% visible Outline Fix)
+        function getPetSVG(level, state) {
+            const fillMain = "#ffffff";
+            const fillInnerEar = "#ff9eb5";
+            const fillOutline = "#000000"; // Pure black outlines for ultimate high-contrast visibility!
+            const fillBlush = "#ff7da7";
+            const fillGold = "#ffeb3b";
+            const fillDarkGold = "#fbc02d";
+            const fillGreen = "#4caf50";
+            const fillRed = "#ff2a6d";
+            const fillBlue = "#3b82f6";
+            const fillPurple = "#bb86fc";
+
+            // Generate eye state templates
+            let eyesSVG = '';
+            if (state === 'joy') {
+                eyesSVG = `
+                    <!-- Joy Squinting Eyes -->
+                    <rect x="4" y="9" width="2" height="1" fill="${fillOutline}"/>
+                    <rect x="3" y="10" width="1" height="1" fill="${fillOutline}"/>
+                    <rect x="5" y="10" width="1" height="1" fill="${fillOutline}"/>
+                    <rect x="10" y="9" width="2" height="1" fill="${fillOutline}"/>
+                    <rect x="9" y="10" width="1" height="1" fill="${fillOutline}"/>
+                    <rect x="11" y="10" width="1" height="1" fill="${fillOutline}"/>
+                `;
+            } else if (state === 'munch') {
+                eyesSVG = `
+                    <!-- Munch Closed Eyes -->
+                    <rect x="4" y="10" width="2" height="1" fill="${fillOutline}"/>
+                    <rect x="10" y="10" width="2" height="1" fill="${fillOutline}"/>
+                `;
+            } else {
+                eyesSVG = `
+                    <!-- Normal Glowing Eyes -->
+                    <rect x="4" y="9" width="2" height="2" fill="${fillOutline}"/>
+                    <rect x="10" y="9" width="2" height="2" fill="${fillOutline}"/>
+                    <rect x="4" y="9" width="1" height="1" fill="#ffffff"/>
+                    <rect x="10" y="9" width="1" height="1" fill="#ffffff"/>
+                `;
+            }
+
+            // Assemble Layer List
+            let layers = [];
+
+            // Layer 1: Aura Swirling Sparks (Levels 23-26, 30+)
+            if (level === 23) {
+                layers.push(`
+                    <rect x="1" y="10" width="1" height="1" fill="${fillRed}"/>
+                    <rect x="0" y="11" width="1" height="1" fill="${fillGold}"/>
+                    <rect x="14" y="10" width="1" height="1" fill="${fillRed}"/>
+                    <rect x="15" y="11" width="1" height="1" fill="${fillGold}"/>
+                `);
+            } else if (level === 24) {
+                layers.push(`
+                    <rect x="1" y="9" width="1" height="1" fill="#00bfff"/>
+                    <rect x="0" y="12" width="1" height="1" fill="#00bfff"/>
+                    <rect x="14" y="9" width="1" height="1" fill="#00bfff"/>
+                    <rect x="15" y="12" width="1" height="1" fill="#00bfff"/>
+                `);
+            } else if (level === 25) {
+                layers.push(`
+                    <rect x="1" y="10" width="1" height="1" fill="${fillGreen}"/>
+                    <rect x="14" y="10" width="1" height="1" fill="${fillGreen}"/>
+                `);
+            } else if (level === 26) {
+                layers.push(`
+                    <rect x="1" y="8" width="1" height="2" fill="${fillGold}"/>
+                    <rect x="0" y="9" width="1" height="1" fill="${fillGold}"/>
+                    <rect x="14" y="8" width="1" height="2" fill="${fillGold}"/>
+                    <rect x="15" y="9" width="1" height="1" fill="${fillGold}"/>
+                `);
+            } else if (level >= 30) {
+                layers.push(`
+                    <rect x="0" y="6" width="1" height="1" fill="${fillGold}"/>
+                    <rect x="1" y="13" width="1" height="1" fill="${fillBlush}"/>
+                    <rect x="15" y="6" width="1" height="1" fill="${fillGold}"/>
+                    <rect x="14" y="13" width="1" height="1" fill="${fillBlush}"/>
+                `);
+            }
+
+            // Layer 2: Fluttering Wings (Levels 19+)
+            if (level === 19) {
+                layers.push(`
+                    <g class="anim-wing-left">
+                        <rect x="0" y="7" width="2" height="3" fill="${fillOutline}"/>
+                        <rect x="1" y="8" width="2" height="2" fill="${fillMain}"/>
+                    </g>
+                `);
+            } else if (level >= 20) {
+                const wingTipColor = (level === 21 || level >= 28) ? fillBlush : fillMain;
+                const leftGoldDecor = (level >= 30) ? `<rect x="0" y="8" width="1" height="1" fill="${fillGold}"/>` : '';
+                const rightGoldDecor = (level >= 30) ? `<rect x="15" y="8" width="1" height="1" fill="${fillGold}"/>` : '';
+                layers.push(`
+                    <g class="anim-wing-left">
+                        <rect x="0" y="6" width="2" height="4" fill="${fillOutline}"/>
+                        <rect x="1" y="7" width="2" height="3" fill="${fillMain}"/>
+                        <rect x="1" y="8" width="1" height="1" fill="${wingTipColor}"/>
+                        ${leftGoldDecor}
+                    </g>
+                    <g class="anim-wing-right">
+                        <rect x="14" y="6" width="2" height="4" fill="${fillOutline}"/>
+                        <rect x="13" y="7" width="2" height="3" fill="${fillMain}"/>
+                        <rect x="14" y="8" width="1" height="1" fill="${wingTipColor}"/>
+                        ${rightGoldDecor}
+                    </g>
+                `);
+            }
+
+            // Layer 3: Cosmic Halos (Levels 17+)
+            if (level === 17 || level === 18) {
+                const haloWidth = (level === 18) ? 6 : 4;
+                const startX = (level === 18) ? 5 : 6;
+                layers.push(`
+                    <rect x="${startX}" y="0" width="${haloWidth}" height="1" fill="${fillGold}"/>
+                    <rect x="${startX - 1}" y="0" width="1" height="1" fill="${fillDarkGold}"/>
+                    <rect x="${startX + haloWidth}" y="0" width="1" height="1" fill="${fillDarkGold}"/>
+                `);
+            } else if (level >= 19 && level !== 22) {
+                const topColor = (level >= 28) ? fillRed : fillGold;
+                const subColor = (level >= 28) ? fillGold : fillMain;
+                layers.push(`
+                    <rect x="5" y="0" width="6" height="1" fill="${topColor}"/>
+                    <rect x="4" y="0" width="1" height="1" fill="${fillDarkGold}"/>
+                    <rect x="11" y="0" width="1" height="1" fill="${fillDarkGold}"/>
+                    <rect x="6" y="-1" width="4" height="1" fill="${subColor}"/>
+                `);
+            } else if (level === 22) {
+                layers.push(`
+                    <rect x="5" y="0" width="6" height="1" fill="#00bfff"/>
+                    <rect x="4" y="0" width="1" height="1" fill="#3b82f6"/>
+                    <rect x="11" y="0" width="1" height="1" fill="#3b82f6"/>
+                `);
+            }
+
+            // Layer 4: Primary Character Base (Evolution Forms)
+            if (level === 1) {
+                layers.push(`
+                    <rect x="5" y="3" width="6" height="10" fill="${fillOutline}"/>
+                    <rect x="4" y="5" width="8" height="7" fill="${fillOutline}"/>
+                    <rect x="6" y="2" width="4" height="12" fill="${fillOutline}"/>
+                    <rect x="6" y="3" width="4" height="10" fill="#e8e5ff"/>
+                    <rect x="5" y="5" width="6" height="7" fill="#e8e5ff"/>
+                    <rect x="5" y="7" width="2" height="1" fill="${fillInnerEar}"/>
+                    <rect x="9" y="7" width="2" height="1" fill="${fillInnerEar}"/>
+                    <rect x="7" y="5" width="2" height="2" fill="${fillBlush}"/>
+                    <rect x="7" y="9" width="2" height="2" fill="${fillPurple}"/>
+                    <path d="M12,2 h2 v1 h-2 v1 h2" fill="none" stroke="${fillPurple}" stroke-width="0.8"/>
+                `);
+            } else if (level === 2) {
+                layers.push(`
+                    <rect x="5" y="3" width="6" height="10" fill="${fillOutline}"/>
+                    <rect x="4" y="5" width="8" height="7" fill="${fillOutline}"/>
+                    <rect x="6" y="2" width="4" height="12" fill="${fillOutline}"/>
+                    <rect x="6" y="3" width="4" height="10" fill="#e8e5ff"/>
+                    <rect x="5" y="5" width="6" height="7" fill="#e8e5ff"/>
+                    <!-- Symmetrical crack lines -->
+                    <rect x="7" y="4" width="2" height="1" fill="${fillOutline}"/>
+                    <rect x="6" y="5" width="1" height="1" fill="${fillOutline}"/>
+                    <rect x="9" y="5" width="1" height="1" fill="${fillOutline}"/>
+                    <!-- Leaf sprout stem -->
+                    <rect x="7" y="0" width="2" height="2" fill="${fillGreen}"/>
+                    <rect x="6" y="1" width="1" height="1" fill="${fillOutline}"/>
+                    <rect x="9" y="1" width="1" height="1" fill="${fillOutline}"/>
+                `);
+            } else if (level === 3 || level === 4) {
+                layers.push(`
+                    <rect x="4" y="5" width="8" height="8" fill="${fillOutline}"/>
+                    <rect x="3" y="6" width="10" height="6" fill="${fillOutline}"/>
+                    <rect x="5" y="4" width="6" height="10" fill="${fillOutline}"/>
+                    <rect x="5" y="5" width="6" height="8" fill="${fillMain}"/>
+                    <rect x="4" y="6" width="8" height="6" fill="${fillMain}"/>
+                    <rect x="4" y="9" width="1" height="1" fill="${fillBlush}"/>
+                    <rect x="11" y="9" width="1" height="1" fill="${fillBlush}"/>
+                    <rect x="7" y="9" width="2" height="1" fill="${fillOutline}"/>
+                    ${eyesSVG}
+                `);
+                if (level === 4) {
+                    layers.push(`
+                        <rect x="7" y="1" width="2" height="3" fill="${fillGreen}"/>
+                        <rect x="6" y="2" width="4" height="1" fill="${fillGreen}"/>
+                        <rect x="7" y="3" width="2" height="1" fill="${fillOutline}"/>
+                    `);
+                }
+            } else if (level === 5) {
+                layers.push(`
+                    <rect x="3" y="4" width="2" height="3" fill="${fillOutline}"/>
+                    <rect x="11" y="4" width="2" height="3" fill="${fillOutline}"/>
+                    <rect x="3" y="5" width="1" height="2" fill="${fillMain}"/>
+                    <rect x="12" y="5" width="1" height="2" fill="${fillMain}"/>
+                    <rect x="3" y="5" width="1" height="1" fill="${fillInnerEar}"/>
+                    <rect x="12" y="5" width="1" height="1" fill="${fillInnerEar}"/>
+                    <rect x="3" y="7" width="10" height="8" fill="${fillOutline}"/>
+                    <rect x="4" y="8" width="8" height="6" fill="${fillMain}"/>
+                    <rect x="4" y="11" width="1" height="1" fill="${fillBlush}"/>
+                    <rect x="11" y="11" width="1" height="1" fill="${fillBlush}"/>
+                    <rect x="7" y="11" width="2" height="1" fill="${fillOutline}"/>
+                    ${eyesSVG}
+                `);
+            } else {
+                layers.push(`
+                    <rect x="3" y="1" width="3" height="7" fill="${fillOutline}"/>
+                    <rect x="10" y="1" width="3" height="7" fill="${fillOutline}"/>
+                    <rect x="2" y="6" width="12" height="9" fill="${fillOutline}"/>
+                    <rect x="1" y="8" width="14" height="6" fill="${fillOutline}"/>
+                    <rect x="4" y="2" width="1" height="5" fill="${fillMain}"/>
+                    <rect x="11" y="2" width="1" height="5" fill="${fillMain}"/>
+                    <rect x="3" y="7" width="10" height="7" fill="${fillMain}"/>
+                    <rect x="2" y="8" width="12" height="5" fill="${fillMain}"/>
+                    <rect x="4" y="3" width="1" height="3" fill="${fillInnerEar}"/>
+                    <rect x="11" y="3" width="1" height="3" fill="${fillInnerEar}"/>
+                    <rect x="3" y="11" width="2" height="1" fill="${fillBlush}"/>
+                    <rect x="11" y="11" width="2" height="1" fill="${fillBlush}"/>
+                    <rect x="7" y="11" width="2" height="1" fill="${fillOutline}"/>
+                    <rect x="8" y="12" width="1" height="1" fill="${fillOutline}"/>
+                    ${eyesSVG}
+                `);
+            }
+
+            // Layer 5: Hats & Cosplay Accessories
+            if (level === 8) {
+                layers.push(`
+                    <rect x="1" y="2" width="3" height="3" fill="${fillOutline}"/>
+                    <rect x="2" y="3" width="1" height="1" fill="${fillRed}"/>
+                    <rect x="1" y="2" width="1" height="1" fill="${fillInnerEar}"/>
+                    <rect x="3" y="2" width="1" height="1" fill="${fillInnerEar}"/>
+                    <rect x="1" y="4" width="1" height="1" fill="${fillInnerEar}"/>
+                    <rect x="3" y="4" width="1" height="1" fill="${fillInnerEar}"/>
+                `);
+            } else if (level === 9) {
+                layers.push(`
+                    <rect x="1" y="2" width="3" height="3" fill="${fillOutline}"/>
+                    <rect x="2" y="3" width="1" height="1" fill="${fillRed}"/>
+                    <rect x="1" y="2" width="1" height="1" fill="${fillInnerEar}"/>
+                    <rect x="3" y="2" width="1" height="1" fill="${fillInnerEar}"/>
+                    <rect x="12" y="2" width="3" height="3" fill="${fillOutline}"/>
+                    <rect x="13" y="3" width="1" height="1" fill="${fillRed}"/>
+                    <rect x="12" y="2" width="1" height="1" fill="${fillInnerEar}"/>
+                    <rect x="14" y="2" width="1" height="1" fill="${fillInnerEar}"/>
+                `);
+            } else if (level === 10) {
+                layers.push(`
+                    <rect x="5" y="5" width="6" height="3" fill="${fillRed}"/>
+                    <rect x="6" y="4" width="4" height="1" fill="${fillGreen}"/>
+                    <rect x="6" y="6" width="1" height="1" fill="${fillGold}"/>
+                    <rect x="9" y="6" width="1" height="1" fill="${fillGold}"/>
+                    <rect x="8" y="7" width="1" height="1" fill="${fillGold}"/>
+                `);
+            } else if (level === 11) {
+                layers.push(`
+                    <rect x="7" y="3" width="2" height="2" fill="${fillGreen}"/>
+                    <rect x="6" y="5" width="2" height="2" fill="${fillRed}"/>
+                    <rect x="8" y="5" width="2" height="2" fill="${fillRed}"/>
+                    <rect x="6" y="5" width="1" height="1" fill="#ffffff"/>
+                    <rect x="8" y="5" width="1" height="1" fill="#ffffff"/>
+                `);
+            } else if (level === 12) {
+                layers.push(`
+                    <rect x="5" y="4" width="6" height="3" fill="${fillRed}"/>
+                    <rect x="6" y="3" width="4" height="1" fill="${fillRed}"/>
+                    <rect x="6" y="4" width="1" height="1" fill="#ffffff"/>
+                    <rect x="9" y="5" width="1" height="1" fill="#ffffff"/>
+                `);
+            } else if (level === 13) {
+                layers.push(`
+                    <rect x="7" y="2" width="2" height="2" fill="${fillPurple}"/>
+                    <rect x="6" y="4" width="4" height="1" fill="${fillPurple}"/>
+                    <rect x="5" y="5" width="6" height="1" fill="${fillPurple}"/>
+                    <rect x="7" y="1" width="2" height="1" fill="${fillGold}"/>
+                `);
+            } else if (level === 14) {
+                layers.push(`
+                    <rect x="2" y="13" width="12" height="2" fill="${fillBlue}"/>
+                    <rect x="7" y="2" width="2" height="2" fill="${fillPurple}"/>
+                    <rect x="6" y="4" width="4" height="1" fill="${fillPurple}"/>
+                    <rect x="5" y="5" width="6" height="1" fill="${fillPurple}"/>
+                    <rect x="7" y="1" width="2" height="1" fill="${fillGold}"/>
+                `);
+            } else if (level === 15) {
+                layers.push(`
+                    <rect x="3" y="9" width="10" height="2" fill="${fillGold}"/>
+                    <rect x="4" y="9" width="2" height="2" fill="#00bfff"/>
+                    <rect x="10" y="9" width="2" height="2" fill="#00bfff"/>
+                    <rect x="4" y="9" width="1" height="1" fill="#ffffff"/>
+                    <rect x="10" y="9" width="1" height="1" fill="#ffffff"/>
+                `);
+            } else if (level === 16) {
+                layers.push(`
+                    <rect x="4" y="13" width="8" height="1" fill="${fillRed}"/>
+                    <rect x="7" y="13" width="2" height="2" fill="${fillGold}"/>
+                    <rect x="7" y="13" width="1" height="1" fill="#ffffff"/>
+                `);
+            } else if (level >= 27) {
+                layers.push(`
+                    <rect x="6" y="3" width="4" height="2" fill="${fillOutline}"/>
+                    <rect x="6" y="4" width="4" height="1" fill="${fillGold}"/>
+                    <rect x="6" y="3" width="1" height="1" fill="${fillGold}"/>
+                    <rect x="9" y="3" width="1" height="1" fill="${fillGold}"/>
+                    <rect x="7" y="3" width="2" height="1" fill="${fillRed}"/>
+                `);
+            }
+
+            return layers.join('');
+        }
+
+        // Render current character form with expanded viewBox to prevent clipping
+        function renderPetSprite() {
+            const container = document.getElementById('tamaPetSprite');
+            if (container) {
+                container.innerHTML = `
+                    <svg viewBox="-2 -2 20 20" width="100%" height="100%" style="image-rendering: pixelated;">
+                        ${getPetSVG(petLvl, petState)}
+                    </svg>
+                `;
+            }
+        }
+
+        // Update levels and experience bars
+        function updatePetUI() {
+            const required = getRequiredTasksForLevel(petLvl);
+            document.getElementById('tamaLvl').innerText = petLvl;
+            document.getElementById('tamaExpText').innerText = `${petExp}/${required}`;
             
-            const newSticker = {
-                type: type,
-                x: 100 + Math.random() * 80,
-                y: 120 + Math.random() * 80,
-                category: currentMode
-            };
+            // Render percentage bar width
+            const pct = (petExp / required) * 100;
+            document.getElementById('tamaExpBar').style.width = `${pct}%`;
+            
+            renderPetSprite();
+        }
 
-            if (isCloudMode) {
+        // Setup live/local saving for virtual pet
+        async function savePetState() {
+            localStorage.setItem('tamaPetLevel', petLvl);
+            localStorage.setItem('tamaPetExp', petExp);
+            updatePetUI();
+
+            if (isCloudMode && userId) {
                 try {
-                    const stickersRef = collection(db, 'artifacts', appId, 'users', userId, 'stickers');
-                    await addDoc(stickersRef, newSticker);
-                    showToast("Placed a sticker! Drag it around 💖");
+                    const petRef = doc(db, 'artifacts', appId, 'users', userId, 'pet', 'status');
+                    await setDoc(petRef, {
+                        level: petLvl,
+                        exp: petExp
+                    }, { merge: true });
                 } catch (error) {
-                    console.error("Error adding sticker to Firebase:", error);
+                    console.error("Error saving pet cloud metrics:", error);
                 }
-            } else {
-                newSticker.id = 'sticker_' + Math.random().toString(36).substr(2, 9);
-                allStickers.push(newSticker);
-                saveLocalStickers();
-                renderStickers();
-                showToast("Placed locally! Drag it around 💖");
             }
+        }
+
+        // Restore pet progress on database logon
+        async function syncPetCloudState() {
+            if (!isCloudMode || !userId) return;
+            try {
+                const petRef = doc(db, 'artifacts', appId, 'users', userId, 'pet', 'status');
+                const docSnap = await getDoc(petRef);
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    petLvl = data.level || 1;
+                    petExp = data.exp || 0;
+                    savePetState();
+                } else {
+                    // Create default database document
+                    await setDoc(petRef, { level: petLvl, exp: petExp });
+                }
+            } catch (error) {
+                console.error("Syncing cloud pet profiles failed:", error);
+            }
+        }
+
+        // Gain EXP points (Called strictly upon completing tasks now!)
+        function gainExp(amount) {
+            const oldLvl = petLvl;
+            const required = getRequiredTasksForLevel(petLvl);
+            petExp += amount;
+            
+            if (petExp >= required) {
+                petLvl++;
+                petExp = petExp - required;
+                
+                // Roll over multiple level ups safely
+                while (petExp >= getRequiredTasksForLevel(petLvl)) {
+                    petExp -= getRequiredTasksForLevel(petLvl);
+                    petLvl++;
+                }
+                
+                // Announce milestones
+                announceEvolution(oldLvl, petLvl);
+                createSparkles(window.innerWidth - 85, window.innerHeight - 85);
+            }
+            savePetState();
+        }
+
+        function announceEvolution(oldLvl, newLvl) {
+            const oldStage = getStageName(oldLvl);
+            const newStage = getStageName(newLvl);
+            if (oldStage !== newStage) {
+                triggerTamaSpeech(`OMG! I am evolving! ${oldStage} became ${newStage}! 🎉✨`);
+            } else {
+                triggerTamaSpeech(`Yay! Leveled up to Level ${newLvl}! 💖`);
+            }
+        }
+
+        // Trigger float sparkles above pet
+        function triggerPetHeartSparkles() {
+            const container = document.getElementById('tamagotchiContainer');
+            
+            const heart = document.createElement('div');
+            heart.innerText = Math.random() > 0.5 ? '💖' : '✨';
+            heart.className = 'heart-float-effect text-lg';
+            // Spawn inside screen bounding coordinates
+            heart.style.right = '40px';
+            heart.style.bottom = '80px';
+            container.appendChild(heart);
+
+            setTimeout(() => heart.remove(), 1000);
+        }
+
+        // Interactive: Pet action button trigger (No EXP awarded!)
+        window.petTama = () => {
+            petState = 'joy';
+            setPetSpriteAnimation('joy', 1500);
+            triggerPetHeartSparkles();
+            triggerTamaSpeech(getPetInteractionQuote('pet'));
         };
 
-        function renderStickers() {
-            // Remove existing stickers from the planner container first
-            const planner = document.getElementById('plannerPanel');
-            const existingStickers = planner.querySelectorAll('.draggable-sticker');
-            existingStickers.forEach(el => el.remove());
+        // Interactive: Feed action button trigger (No EXP awarded!)
+        window.feedTama = () => {
+            petState = 'munch';
+            setPetSpriteAnimation('munch', 1500);
+            triggerPetHeartSparkles();
+            triggerTamaSpeech(getPetInteractionQuote('feed'));
+        };
 
-            // Filter stickers for current workspace theme
-            const filteredStickers = allStickers.filter(s => s.category === currentMode);
+        // Set sprite graphics state animations
+        function setPetSpriteAnimation(stateName, duration) {
+            petState = stateName;
+            const sprite = document.getElementById('tamaPetSprite');
+            sprite.className = `w-16 h-16 flex items-center justify-center anim-pet-${stateName} transition-all`;
+            renderPetSprite();
 
-            filteredStickers.forEach(sticker => {
-                const el = document.createElement('div');
-                el.className = 'draggable-sticker';
-                el.id = sticker.id;
-                el.style.left = sticker.x + 'px';
-                el.style.top = sticker.y + 'px';
-                el.innerHTML = STICKER_SVGS[sticker.type] || '';
-
-                // Enable multi-touch and pointer drag interactions
-                setupDragInteraction(el, sticker);
-
-                // Double tap or double click to remove
-                el.addEventListener('dblclick', () => removeSticker(sticker.id));
-                el.addEventListener('touchend', handleDoubleTap(() => removeSticker(sticker.id)));
-
-                planner.appendChild(el);
-            });
+            clearTimeout(window.petStateTimeout);
+            window.petStateTimeout = setTimeout(() => {
+                petState = 'idle';
+                sprite.className = 'w-16 h-16 flex items-center justify-center anim-pet-idle transition-all';
+                renderPetSprite();
+            }, duration);
         }
 
-        function setupDragInteraction(element, stickerData) {
-            let active = false;
-            let currentX;
-            let currentY;
-            let initialX;
-            let initialY;
-            let xOffset = stickerData.x;
-            let yOffset = stickerData.y;
-
-            element.addEventListener('pointerdown', dragStart);
-
-            function dragStart(e) {
-                // Ensure we handle clicking internal SVGs
-                active = true;
-                initialX = e.clientX - xOffset;
-                initialY = e.clientY - yOffset;
-                
-                element.setPointerCapture(e.pointerId);
-                element.addEventListener('pointermove', drag);
-                element.addEventListener('pointerup', dragEnd);
-            }
-
-            function drag(e) {
-                if (!active) return;
-                e.preventDefault();
-
-                currentX = e.clientX - initialX;
-                currentY = e.clientY - initialY;
-
-                // Restrict sticker movement space within the bounds of the planner panel
-                const planner = document.getElementById('plannerPanel');
-                const maxX = planner.clientWidth - 70;
-                const maxY = planner.clientHeight - 70;
-
-                xOffset = Math.max(0, Math.min(currentX, maxX));
-                yOffset = Math.max(0, Math.min(currentY, maxY));
-
-                element.style.left = xOffset + 'px';
-                element.style.top = yOffset + 'px';
-            }
-
-            async function dragEnd(e) {
-                active = false;
-                element.releasePointerCapture(e.pointerId);
-                element.removeEventListener('pointermove', drag);
-                element.removeEventListener('pointerup', dragEnd);
-
-                // Update placement details in the database
-                stickerData.x = xOffset;
-                stickerData.y = yOffset;
-
-                if (isCloudMode) {
-                    try {
-                        const docRef = doc(db, 'artifacts', appId, 'users', userId, 'stickers', stickerData.id);
-                        await setDoc(docRef, {
-                            type: stickerData.type,
-                            x: stickerData.x,
-                            y: stickerData.y,
-                            category: stickerData.category
-                        }, { merge: true });
-                    } catch (err) {
-                        console.error("Error updating sticker coordinate positions:", err);
-                    }
-                } else {
-                    const idx = allStickers.findIndex(s => s.id === stickerData.id);
-                    if (idx > -1) {
-                        allStickers[idx] = stickerData;
-                        saveLocalStickers();
-                    }
-                }
+        // Trigger dynamic reaction prompts
+        function triggerTamaReaction(actionType) {
+            if (actionType === 'complete') {
+                setPetSpriteAnimation('joy', 2000);
+                gainExp(1); // Increment strictly by 1 task completion point!
+                triggerPetHeartSparkles();
+                triggerTamaSpeech(getPetQuoteForTask('complete'));
+            } else if (actionType === 'add') {
+                setPetSpriteAnimation('idle', 1000);
+                triggerTamaSpeech(getPetQuoteForTask('add'));
+            } else if (actionType === 'delete') {
+                triggerTamaReactionDeleted();
+            } else if (actionType === 'snooze') {
+                triggerTamaSpeech(getPetQuoteForTask('snoozed'));
             }
         }
 
-        // Help manage double-tap actions on mobile browsers natively
-        let lastTap = 0;
-        function handleDoubleTap(callback) {
-            return function (e) {
-                const currentTime = new Date().getTime();
-                const tapLength = currentTime - lastTap;
-                if (tapLength < 300 && tapLength > 0) {
-                    callback();
-                }
-                lastTap = currentTime;
+        function triggerTamaReactionDeleted() {
+            triggerTamaSpeech(getPetQuoteForTask('delete'));
+        }
+
+        // Handle speech text bubble toggles
+        function triggerTamaSpeech(text) {
+            const bubble = document.getElementById('tamaBubble');
+            bubble.innerText = text;
+            bubble.classList.remove('opacity-0', 'scale-90', 'pointer-events-none', 'translate-y-2');
+            bubble.classList.add('opacity-100', 'scale-100', 'translate-y-0');
+
+            clearTimeout(window.tamaBubbleTimeout);
+            window.tamaBubbleTimeout = setTimeout(() => {
+                bubble.classList.add('opacity-0', 'scale-90', 'pointer-events-none', 'translate-y-2');
+                bubble.classList.remove('opacity-100', 'scale-100', 'translate-y-0');
+            }, 4500);
+        }
+
+        // Quotes for task management updates
+        function getPetQuoteForTask(type) {
+            const quotes = {
+                complete: [
+                    "Omg yes, you completed it! Hop hop! 👑",
+                    "Yass queen! Streak is growing! 🌱",
+                    "Productivity masterclass! Sparkles! ✨",
+                    "A step closer to your dreams! 💖",
+                    "Splendid bunny job! I am so proud! 🥰"
+                ],
+                add: [
+                    "A new adventure awaits! Let's hop to it! 🎯",
+                    "Added! You can definitely finish it! 🎒",
+                    "New task loaded! Let's clear it! ☕",
+                    "New target locked in! 🚀"
+                ],
+                delete: [
+                    "Cleaned up! Off the board! 🗑️",
+                    "Decluttering the board is self-care! 🌸",
+                    "Phew, gone! Fresh start! ✨"
+                ],
+                snoozed: [
+                    "Snoozed! Taking a break is productive too! 😴",
+                    "Moved! No worries, tomorrow is a new day! ☁️",
+                    "Rest up! We'll tackle it later! 🎀"
+                ]
             };
+            const list = quotes[type] || ["Let's do this!"];
+            return list[Math.floor(Math.random() * list.length)];
         }
 
-        async function removeSticker(id) {
-            if (!userId) return;
+        // Quotes for direct pet buttons
+        function getPetInteractionQuote(type) {
+            const quotes = {
+                pet: [
+                    "Aww, my ears are ticklish! 🥰",
+                    "I love pet-pets! 💖",
+                    "We are the ultimate team! 👋",
+                    "Hop hop... thank you, bunny bestie! 🌸"
+                ],
+                feed: [
+                    "Nom nom nom... tasty strawberry! 🍓",
+                    "Yum! This snack gives me power! 💪",
+                    "Munching away happily! 🍄",
+                    "Delicious! You are the best caregiver! 🥰"
+                ]
+            };
+            const list = quotes[type] || ["Yummy!"];
+            return list[Math.floor(Math.random() * list.length)];
+        }
 
-            // Trigger a quick pixel particle splash
-            const el = document.getElementById(id);
-            if (el) {
-                const rect = el.getBoundingClientRect();
-                createSparkles(rect.left + 30, rect.top + 30);
-            }
+        // Occasional idle thought bubble loop
+        function setupTamaChatter() {
+            const idleThoughts = [
+                "Remember to drink some water! 💧",
+                "How is your focus going, cutie? ☕",
+                "Don't overwhelm yourself, step-by-step! 🌸",
+                "You are doing so, so good! Proud! 🥰",
+                "Cyber space is cozy with you! 🌌",
+                "Let's check off one little task! ✨"
+            ];
 
-            if (isCloudMode) {
-                try {
-                    const docRef = doc(db, 'artifacts', appId, 'users', userId, 'stickers', id);
-                    await deleteDoc(docRef);
-                    showToast("Removed sticker! 🗑️");
-                } catch (error) {
-                    console.error("Error deleting sticker:", error);
+            clearInterval(idleTalkInterval);
+            idleTalkInterval = setInterval(() => {
+                // Chatter 25% of the time to keep it natural and non-intrusive
+                if (Math.random() > 0.75) {
+                    const randomQuote = idleThoughts[Math.floor(Math.random() * idleThoughts.length)];
+                    triggerTamaSpeech(randomQuote);
                 }
-            } else {
-                allStickers = allStickers.filter(s => s.id !== id);
-                saveLocalStickers();
-                renderStickers();
-                showToast("Removed sticker! 🗑️");
-            }
+            }, 35000);
         }
 
         // Start initialization process on page load
